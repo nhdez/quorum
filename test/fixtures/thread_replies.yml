@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  forum_thread: one
+  can_be_quoted: false
+
+two:
+  forum_thread: two
+  can_be_quoted: false

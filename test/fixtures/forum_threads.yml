@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  forum: one
+  title: MyString
+  is_draft: false
+  is_sticky: false
+  is_visible: false
+  can_be_replied_to: false
+  includes_poll: false
+  expires_at: 2026-07-10 18:11:56
+
+two:
+  forum: two
+  title: MyString
+  is_draft: false
+  is_sticky: false
+  is_visible: false
+  can_be_replied_to: false
+  includes_poll: false
+  expires_at: 2026-07-10 18:11:56

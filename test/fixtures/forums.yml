@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  forum_category: one
+  index_order: 1
+  title: MyString
+  description: MyText
+  affiliation_factor: 9.99
+  is_visible: false
+
+two:
+  forum_category: two
+  index_order: 1
+  title: MyString
+  description: MyText
+  affiliation_factor: 9.99
+  is_visible: false
