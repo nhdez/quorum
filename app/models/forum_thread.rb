@@ -3,6 +3,7 @@ class ForumThread < ApplicationRecord
   friendly_id :title, use: :slugged
   include FallacyScannable
   include Votable
+  include Mentionable
 
   belongs_to :forum
   belongs_to :user

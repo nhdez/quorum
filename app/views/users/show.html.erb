@@ -5,9 +5,26 @@
 
 <%= render Users::ProfileHeaderComponent.new(profile: @profile) %>
 
-<div class="flex gap-4.5 flex-wrap">
+<% if @notifications %>
+  <%= render Ui::PanelComponent.new(title: "Notifications") do %>
+    <% if @notifications.empty? %>
+      <div class="px-3.5 py-3 text-xs text-muted">No notifications yet.</div>
+    <% else %>
+      <% @notifications.each do |notification| %>
+        <div class="px-3.5 py-2.5 border-b border-line text-xs flex justify-between items-center gap-2.5 <%= "bg-row-alt" if notification.unread? %>">
+          <%= link_to notification.message, notification.url, class: "text-link hover:underline" %>
+          <span class="text-[10px] text-muted shrink-0"><%= notification.created_at.strftime("%b %-d, %Y") %></span>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<div class="flex gap-4.5 flex-wrap mt-4.5">
   <div class="flex-1 min-w-[220px] flex flex-col gap-4.5 h-fit">
-    <%= render Users::AffiliationPanelComponent.new(affiliation: @affiliation) %>
+    <% if @affiliation %>
+      <%= render Users::AffiliationPanelComponent.new(affiliation: @affiliation) %>
+    <% end %>
     <%= render Users::StatsPanelComponent.new(stats: @stats) %>
   </div>
 

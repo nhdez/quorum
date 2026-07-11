@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 
   post "votes/toggle", to: "votes#toggle", as: :toggle_vote
   post "highlights/toggle", to: "highlights#toggle", as: :toggle_highlight
+  get "mentions", to: "mentions#index", as: :mentions
 
   namespace :admin do
     get "/", to: "dashboard#index", as: :dashboard

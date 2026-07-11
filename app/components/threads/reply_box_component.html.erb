@@ -1,7 +1,10 @@
 <%= render Ui::PanelComponent.new(title: "Post a Reply") do %>
   <div class="p-3.5">
     <%= form_with model: ThreadReply.new, url: reply_path do |f| %>
-      <%= f.rich_textarea :body %>
+      <%= f.rich_textarea :body do %>
+        <lexxy-prompt trigger="@" src="<%= mentions_path %>" name="mention" remote-filtering empty-results="No users found">
+        </lexxy-prompt>
+      <% end %>
       <div class="flex justify-end mt-2.5">
         <%= f.submit "Post Reply", class: "px-4.5 py-2 border border-register-line rounded-[3px] bg-register text-white text-xs font-bold cursor-pointer [font-family:inherit] hover:opacity-90" %>
       </div>

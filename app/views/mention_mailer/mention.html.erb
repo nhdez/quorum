@@ -1,0 +1,7 @@
+<p><strong><%= @mentioner.display_name %></strong> mentioned you in <strong><%= @thread.title %></strong>:</p>
+
+<blockquote style="border-left: 3px solid #ccc; margin: 0; padding-left: 12px; color: #444;">
+  <%= @post.body %>
+</blockquote>
+
+<p><%= link_to "View thread", forum_thread_url(@thread.forum, @thread) %></p>

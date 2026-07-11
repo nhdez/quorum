@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_11_180002) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_11_190000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -161,6 +161,31 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_180002) do
     t.index ["slug"], name: "index_forums_on_slug", unique: true
   end
 
+  create_table "noticed_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "notifications_count"
+    t.jsonb "params"
+    t.uuid "record_id"
+    t.string "record_type"
+    t.string "type"
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id"], name: "index_noticed_events_on_record"
+  end
+
+  create_table "noticed_notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.uuid "event_id", null: false
+    t.datetime "read_at"
+    t.uuid "recipient_id", null: false
+    t.string "recipient_type", null: false
+    t.datetime "seen_at"
+    t.string "type"
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_noticed_notifications_on_event_id"
+    t.index ["read_at"], name: "index_noticed_notifications_on_read_at"
+    t.index ["recipient_type", "recipient_id"], name: "index_noticed_notifications_on_recipient"
+  end
+
   create_table "rank_conditions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "metric", null: false
@@ -289,6 +314,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_180002) do
   add_foreign_key "forum_threads", "users"
   add_foreign_key "forums", "forum_categories"
   add_foreign_key "forums", "forums", column: "parent_forum_id"
+  add_foreign_key "noticed_notifications", "noticed_events", column: "event_id"
   add_foreign_key "rank_conditions", "ranks"
   add_foreign_key "thread_replies", "forum_threads"
   add_foreign_key "thread_replies", "users"

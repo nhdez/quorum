@@ -1,0 +1,7 @@
+<%# This partial doubles as the mention's live-editor template AND the
+    ActionText attachable render partial (used wherever a saved post body
+    is displayed, including from a Mailer view — which renders attachments
+    through its own isolated view context that doesn't mix in named route
+    helpers). Calling the url_helpers module directly avoids depending on
+    that. %>
+<a href="<%= Rails.application.routes.url_helpers.member_path(user) %>" style="display: inline-block; padding: 0 4px; border-radius: 3px; background: #eef2fa; color: #2455a4; font-weight: bold; text-decoration: none;">@<%= user.display_name %></a>

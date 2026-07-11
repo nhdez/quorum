@@ -1,32 +1,58 @@
 class UsersController < ApplicationController
-  GROUP_COLORS = { admin: "#c0392b", mod: "#1e8449", senior: "#2455a4", member: "#333333" }.freeze
-
   def show
     @nav_current = :members
+    @user = User.find(params[:id])
+    earned_rank = @user.current_rank
 
     @profile = {
-      name: "PoliticalJunkie88", rank: "Senior Member", rank_color: GROUP_COLORS[:senior],
-      initial: "P", avatar_color: "#2455a4", is_devils_advocate: true
+      name: @user.display_name,
+      rank: @user.rank_label,
+      rank_color: @user.rank_color,
+      initial: @user.display_name.first.upcase,
+      avatar_color: @user.avatar_color,
+      is_devils_advocate: false
     }
 
-    @affiliation = { name: "Progressive Alliance", color: "#6b4fa0", is_rep: false }
+    @affiliation = if @user.faction
+      { name: @user.faction.name, color: @user.faction.color, is_rep: false }
+    end
 
     @stats = [
-      { label: "Joined", value: "March 2019" },
-      { label: "Last Active", value: "Today, 11:52 AM" },
-      { label: "Total Posts", value: "4,821" },
-      { label: "Threads Started", value: "212" },
-      { label: "Reputation", value: "+312" },
-      { label: "Likes Received", value: "1,904" }
+      { label: "Joined", value: @user.created_at.strftime("%B %Y") },
+      { label: "Total Posts", value: @user.post_count.to_s },
+      { label: "Threads Started", value: @user.forum_threads.count.to_s },
+      { label: "Votes Received", value: @user.received_votes_count.to_s }
     ]
+    @stats << { label: "Rank", value: earned_rank.name } if earned_rank
 
-    @about_me = "Longtime lurker turned poster. I follow election data way too closely and I will absolutely bring up turnout models in threads where nobody asked. Here mostly for the debates, occasionally for the off-topic lounge."
-    @signature = "“Trust data, not headlines.” — 4x Election Prediction Pool winner"
+    @about_me = "This member hasn't written a bio yet."
+    @signature = nil
 
-    @recent_posts = [
-      { thread: "Re: Midterm predictions thread", snippet: "Turnout in the suburbs is going to be the deciding factor, same as last cycle...", time: "Today, 08:02 AM" },
-      { thread: "Re: International Affairs mega-thread: Ukraine talks", snippet: "Worth noting the talks stalled on the same sticking point as last round...", time: "Yesterday, 3:14 PM" },
-      { thread: "Best sources for unbiased polling data?", snippet: "I've had good luck cross-referencing three or four aggregators rather than trusting just one...", time: "3 days ago" }
-    ]
+    @recent_posts = recent_posts_for(@user)
+    @notifications = @user.notifications.newest_first.limit(20) if current_user == @user
+  end
+
+  private
+
+  def recent_posts_for(user)
+    threads = user.forum_threads.order(created_at: :desc).limit(3).map do |thread|
+      recent_post_data(thread.title, thread.body, thread.created_at, forum_thread_path(thread.forum, thread))
+    end
+
+    replies = user.thread_replies.includes(forum_thread: :forum).order(created_at: :desc).limit(3).map do |reply|
+      recent_post_data(reply.forum_thread.title, reply.body, reply.created_at, forum_thread_path(reply.forum_thread.forum, reply.forum_thread))
+    end
+
+    (threads + replies).sort_by { |post| -post[:created_at].to_f }.first(3).each { |post| post.delete(:created_at) }
+  end
+
+  def recent_post_data(thread_title, body, created_at, path)
+    {
+      thread: thread_title,
+      snippet: body.to_plain_text.truncate(140),
+      time: created_at.strftime("%b %-d, %Y"),
+      path: path,
+      created_at: created_at
+    }
   end
 end

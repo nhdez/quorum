@@ -16,7 +16,10 @@
 
       <div class="mb-3.5">
         <div class="text-[11px] font-bold text-muted mb-1">BODY</div>
-        <%= f.rich_textarea :body %>
+        <%= f.rich_textarea :body do %>
+          <lexxy-prompt trigger="@" src="<%= mentions_path %>" name="mention" remote-filtering empty-results="No users found">
+          </lexxy-prompt>
+        <% end %>
       </div>
 
       <%= f.submit "Create Thread", class: "py-2.5 px-4 border border-register-line rounded-[3px] bg-register text-white text-[13px] font-bold cursor-pointer [font-family:inherit] hover:opacity-90" %>

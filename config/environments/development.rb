@@ -34,6 +34,11 @@ Rails.application.configure do
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
+  # Open sent emails in the browser instead of actually sending them (or
+  # silently dropping them, which is what happens with no delivery_method
+  # set and raise_delivery_errors off).
+  config.action_mailer.delivery_method = :letter_opener
+
   # Make template changes take effect immediately.
   config.action_mailer.perform_caching = false
 

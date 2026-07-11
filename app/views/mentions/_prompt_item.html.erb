@@ -1,0 +1,11 @@
+<lexxy-prompt-item search="<%= user.display_name %>" sgid="<%= user.attachable_sgid %>">
+  <template type="menu">
+    <span style="display: inline-flex; align-items: center; gap: 6px;">
+      <span style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 999px; color: #fff; font-size: 10px; font-weight: bold; background: <%= user.avatar_color %>;"><%= user.display_name.first.upcase %></span>
+      <span><%= user.display_name %></span>
+    </span>
+  </template>
+  <template type="editor">
+    <%= render "users/user", user: user %>
+  </template>
+</lexxy-prompt-item>

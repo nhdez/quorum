@@ -1,9 +1,13 @@
 <%= render Ui::PanelComponent.new(title: "Recent Posts") do %>
-  <% posts.each do |post| %>
-    <div class="px-3.5 py-3 border-b border-line">
-      <a href="#" class="text-link font-bold text-sm hover:underline"><%= post[:thread] %></a>
-      <div class="text-muted text-xs mt-1"><%= post[:snippet] %></div>
-      <div class="text-muted text-[11px] mt-1"><%= post[:time] %></div>
-    </div>
+  <% if posts.empty? %>
+    <div class="px-3.5 py-3 text-xs text-muted">No posts yet.</div>
+  <% else %>
+    <% posts.each do |post| %>
+      <div class="px-3.5 py-3 border-b border-line">
+        <a href="<%= post[:path] %>" class="text-link font-bold text-sm hover:underline"><%= post[:thread] %></a>
+        <div class="text-muted text-xs mt-1"><%= post[:snippet] %></div>
+        <div class="text-muted text-[11px] mt-1"><%= post[:time] %></div>
+      </div>
+    <% end %>
   <% end %>
 <% end %>

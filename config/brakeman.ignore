@@ -1,0 +1,17 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 15,
+      "fingerprint": "38407aec4c1b3a4e674c92db0ab710141b319c4ce966a62f4bb4294828f53044",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in link_to href",
+      "file": "app/views/users/show.html.erb",
+      "line": 15,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting/",
+      "note": "notification.url is defined in app/notifiers/mention_notifier.rb's notification_methods block and always returns a value built from forum_thread_path (a Rails path helper) — never raw/attacker-controlled input. Brakeman can't statically resolve this dynamically-defined Noticed::Notification method, hence the weak-confidence flag."
+    }
+  ],
+  "updated": "2026-07-11 21:00:00 +0000",
+  "brakeman_version": "8.0.5"
+}
