@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  GROUP_COLORS = ForumsController::GROUP_COLORS
+  GROUP_COLORS = { admin: "#c0392b", mod: "#1e8449", senior: "#2455a4", member: "#333333" }.freeze
 
   def show
     @nav_current = :members
