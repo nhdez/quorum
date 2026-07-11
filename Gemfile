@@ -46,6 +46,7 @@ gem "pundit"
 gem "rolify"
 gem "pagy"
 gem "friendly_id"
+gem "anthropic"
 gem "lexxy", "~> 0.9.21"
 gem "tailwindcss-rails"
 
