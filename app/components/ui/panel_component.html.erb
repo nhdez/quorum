@@ -1,0 +1,9 @@
+<div class="border border-line rounded-[4px] bg-row overflow-hidden shadow-sm" style="<%= "border-left: 6px solid #{accent_color};" if accent_color %>">
+  <% if title %>
+    <div class="bg-linear-to-b from-panel-from to-panel-to px-3.5 py-2 text-panel-heading font-bold text-[13px] <%= "flex justify-between items-center" if note %>">
+      <span><%= title %></span>
+      <% if note %><span class="text-[11px] font-normal opacity-85"><%= note %></span><% end %>
+    </div>
+  <% end %>
+  <%= content %>
+</div>

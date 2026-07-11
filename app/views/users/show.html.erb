@@ -1,0 +1,18 @@
+<%= render Ui::BreadcrumbComponent.new(items: [
+  { label: "Quorum", href: root_path },
+  { label: "#{@profile[:name]}'s Profile", current: true }
+]) %>
+
+<%= render Users::ProfileHeaderComponent.new(profile: @profile) %>
+
+<div class="flex gap-4.5 flex-wrap">
+  <div class="flex-1 min-w-[220px] flex flex-col gap-4.5 h-fit">
+    <%= render Users::AffiliationPanelComponent.new(affiliation: @affiliation) %>
+    <%= render Users::StatsPanelComponent.new(stats: @stats) %>
+  </div>
+
+  <div class="flex-[2.4] min-w-[320px] flex flex-col gap-4.5">
+    <%= render Users::AboutMeComponent.new(bio: @about_me, signature: @signature) %>
+    <%= render Users::RecentPostsComponent.new(posts: @recent_posts) %>
+  </div>
+</div>

@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     resources :threads, only: %i[show], controller: "forum_threads"
   end
 
+  get "members/:id", to: "users#show", as: :member
+
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

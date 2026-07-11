@@ -4,7 +4,7 @@ module Ui
       { key: :home, label: "Home", href: "/" },
       { key: :forums, label: "Forums", href: "/" },
       { key: :affiliations, label: "Affiliations", href: "#" },
-      { key: :members, label: "Member List", href: "#" },
+      { key: :members, label: "Member List", href: "/members/political-junkie-88" },
       { key: :ai_flags, label: "AI Flags", href: "#" },
       { key: :calendar, label: "Calendar", href: "#" },
       { key: :search, label: "Search", href: "#" },

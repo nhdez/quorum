@@ -1,0 +1,18 @@
+<div class="border border-line rounded-[4px] mb-4.5 bg-row overflow-hidden shadow-sm">
+  <div class="bg-linear-to-b from-panel-from to-panel-to h-[70px]"></div>
+  <div class="px-5 pb-4.5 flex gap-4.5 items-end -mt-10">
+    <div class="w-[92px] h-[92px] rounded-full text-white flex items-center justify-center font-bold text-4xl border-4 border-row shrink-0" style="background: <%= profile[:avatar_color] %>;"><%= profile[:initial] %></div>
+    <div class="pb-1.5">
+      <div class="text-[22px] font-bold text-ink"><%= profile[:name] %></div>
+      <div class="text-xs font-bold mt-0.5" style="color: <%= profile[:rank_color] %>;"><%= profile[:rank] %></div>
+      <% if profile[:is_devils_advocate] %>
+        <div title="Awarded when the AI bot flags a post from this user as reading against their own affiliation's typical stance." class="inline-block text-[10px] font-bold text-[#8a6d1f] bg-[#faf1d6] border border-[#c9a94a] rounded-full px-2 py-0.5 mt-1.5">&#127917; Devil's Advocate</div>
+      <% end %>
+    </div>
+    <div class="flex-1"></div>
+    <div class="flex gap-2 pb-1.5">
+      <button class="px-3.5 py-1.5 border border-register-line rounded-[3px] bg-register text-white text-xs font-bold cursor-pointer [font-family:inherit] hover:opacity-90">Send Message</button>
+      <button class="px-3.5 py-1.5 border border-line rounded-[3px] bg-row-alt text-ink text-xs cursor-pointer [font-family:inherit] hover:bg-line">Find All Posts</button>
+    </div>
+  </div>
+</div>

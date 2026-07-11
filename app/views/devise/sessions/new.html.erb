@@ -1,26 +1,54 @@
-<h2>Log in</h2>
+<%= render Ui::BreadcrumbComponent.new(items: [ { label: "Quorum", href: root_path }, { label: "Log In", current: true } ]) %>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
+<div class="flex gap-5 flex-wrap">
+  <div class="flex-[1.3] min-w-[300px] h-fit">
+    <%= render Ui::PanelComponent.new(title: "Log In") do %>
+      <div class="p-5 flex flex-col gap-3">
+        <%= render "devise/shared/error_messages", resource: resource %>
+
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <div class="mb-3">
+            <div class="text-[11px] font-bold text-muted mb-1">EMAIL ADDRESS</div>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "you@example.com",
+                  class: "w-full box-border p-2 border border-line rounded-[3px] [font-family:inherit] text-[13px]" %>
+          </div>
+
+          <div class="mb-3">
+            <div class="text-[11px] font-bold text-muted mb-1">PASSWORD</div>
+            <%= f.password_field :password, autocomplete: "current-password", placeholder: "Your password",
+                  class: "w-full box-border p-2 border border-line rounded-[3px] [font-family:inherit] text-[13px]" %>
+          </div>
+
+          <% if devise_mapping.rememberable? %>
+            <label class="flex items-center gap-1.5 text-xs text-muted mb-3">
+              <%= f.check_box :remember_me %>
+              Remember me
+            </label>
+          <% end %>
+
+          <%= f.submit "Log In", class: "w-full py-2.5 px-4 border border-register-line rounded-[3px] bg-register text-white text-[13px] font-bold cursor-pointer [font-family:inherit] hover:opacity-90" %>
+
+          <div class="flex justify-between text-[11px] mt-1">
+            <%= link_to "Forgot your password?", new_user_password_path, class: "text-link hover:underline" %>
+            <%= link_to "Need an account? Register", new_user_registration_path, class: "text-link hover:underline" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 
-  <div class="field">
-    <p><%= f.label :password %></p>
-    <p><%= f.password_field :password, autocomplete: "current-password" %></p>
+  <div class="flex-1 min-w-[260px] h-fit">
+    <%= render Ui::PanelComponent.new(title: "New to Quorum?") do %>
+      <div class="p-4 text-xs text-muted">
+        <div class="mb-2.5">Create a free account to:</div>
+        <ul class="m-0 pl-4.5 flex flex-col gap-1.5 list-disc">
+          <li>Post and reply across all boards</li>
+          <li>Join a political affiliation and vote for representatives</li>
+          <li>Track your reputation and post history</li>
+        </ul>
+        <%= link_to "Create an Account", new_user_registration_path,
+              class: "inline-block mt-3.5 py-2 px-4 border border-register-line rounded-[3px] bg-register text-white text-xs font-bold hover:opacity-90" %>
+      </div>
+    <% end %>
   </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <p><%= f.check_box :remember_me %></p>
-      <p><%= f.label :remember_me %></p>
-    </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

@@ -1,0 +1,9 @@
+<%= render Ui::PanelComponent.new(title: "Political Affiliation", accent_color: affiliation[:color]) do %>
+  <div class="p-3.5 text-xs">
+    <div class="font-bold text-sm" style="color: <%= affiliation[:color] %>;"><%= affiliation[:name] %></div>
+    <% if affiliation[:is_rep] %>
+      <div class="inline-block mt-1 text-[10px] font-bold text-white rounded-full px-2 py-0.5" style="background: <%= affiliation[:color] %>;">ELECTED REPRESENTATIVE</div>
+    <% end %>
+    <div class="text-muted mt-2">Displayed on posts &amp; profile: <b>Yes</b></div>
+  </div>
+<% end %>

@@ -1,29 +1,39 @@
-<h2>Sign up</h2>
+<%= render Ui::BreadcrumbComponent.new(items: [ { label: "Quorum", href: root_path }, { label: "Register", current: true } ]) %>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+<%= render Ui::PanelComponent.new(title: "Create an Account") do %>
+  <div class="p-5 flex flex-col gap-3.5 max-w-[480px]">
+    <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
-  </div>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <div class="mb-3.5">
+        <div class="text-[11px] font-bold text-muted mb-1">EMAIL ADDRESS</div>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "you@example.com",
+              class: "w-full box-border p-2 border border-line rounded-[3px] [font-family:inherit] text-[13px]" %>
+      </div>
 
-  <div class="field">
-    <p><%= f.label :password %></p>
-    <% if @minimum_password_length %>
-      <p><em>(<%= @minimum_password_length %> characters minimum)</em></p>
+      <div class="flex gap-2.5 mb-3.5">
+        <div class="flex-1">
+          <div class="text-[11px] font-bold text-muted mb-1">
+            PASSWORD
+            <% if @minimum_password_length %>
+              <span class="font-normal">(<%= @minimum_password_length %> characters minimum)</span>
+            <% end %>
+          </div>
+          <%= f.password_field :password, autocomplete: "new-password", placeholder: "Choose a password",
+                class: "w-full box-border p-2 border border-line rounded-[3px] [font-family:inherit] text-[13px]" %>
+        </div>
+        <div class="flex-1">
+          <div class="text-[11px] font-bold text-muted mb-1">CONFIRM PASSWORD</div>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Repeat password",
+                class: "w-full box-border p-2 border border-line rounded-[3px] [font-family:inherit] text-[13px]" %>
+        </div>
+      </div>
+
+      <%= f.submit "Create Account", class: "w-full py-2.5 px-4 border border-register-line rounded-[3px] bg-register text-white text-[13px] font-bold cursor-pointer [font-family:inherit] hover:opacity-90 mb-3" %>
+
+      <div class="text-[11px] text-center text-muted">
+        Already have an account? <%= link_to "Log in", new_user_session_path, class: "text-link hover:underline" %>
+      </div>
     <% end %>
-    <p><%= f.password_field :password, autocomplete: "new-password" %></p>
-  </div>
-
-  <div class="field">
-    <p><%= f.label :password_confirmation %></p>
-    <p><%= f.password_field :password_confirmation, autocomplete: "new-password" %></p>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
   </div>
 <% end %>
-
-<%= render "devise/shared/links" %>

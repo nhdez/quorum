@@ -1,0 +1,6 @@
+<%= render Ui::PanelComponent.new(title: "About Me") do %>
+  <div class="p-3.5 text-[13px]"><%= bio %></div>
+  <% if signature.present? %>
+    <div class="px-3.5 pb-3.5 pt-2.5 text-[11px] italic text-muted border-t border-dotted border-line mt-1">Signature: <%= signature %></div>
+  <% end %>
+<% end %>

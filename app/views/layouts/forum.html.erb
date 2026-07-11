@@ -20,9 +20,11 @@
   </head>
 
   <body class="bg-page text-ink text-[13px] leading-normal [font-family:Verdana,Geneva,Arial,sans-serif]">
-    <%= render Ui::MastheadComponent.new %>
-    <%= render Ui::NavBarComponent.new(current: :forums) %>
-    <%= render Ui::AnnouncementBarComponent.new(text: "Forum-wide election-year posting guidelines are now in effect — please review the updated Rules of Conduct before posting.") %>
+    <%= render Ui::MastheadComponent.new(current_user: current_user) %>
+    <%= render Ui::NavBarComponent.new(current: @nav_current || :forums) %>
+    <% if @announcement %>
+      <%= render Ui::AnnouncementBarComponent.new(text: @announcement) %>
+    <% end %>
 
     <div class="max-w-[1200px] mx-auto px-4 pt-5 pb-10">
       <%= yield %>

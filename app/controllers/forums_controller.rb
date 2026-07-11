@@ -1,9 +1,8 @@
 class ForumsController < ApplicationController
-  layout "forum"
-
   GROUP_COLORS = { admin: "#c0392b", mod: "#1e8449", senior: "#2455a4", member: "#333333" }.freeze
 
   def index
+    @announcement = "Forum-wide election-year posting guidelines are now in effect — please review the updated Rules of Conduct before posting."
     @bias_value = 38
     @posts_analyzed = "3,482"
     @bias_history = [ 44, 41, 47, 52, 49, 55, 58, 53, 46, 42, 39, 44, 48, 51 ]

@@ -1,0 +1,10 @@
+<%= render Ui::PanelComponent.new(title: "Statistics") do %>
+  <div class="p-3.5 text-xs">
+    <% stats.each do |row| %>
+      <div class="flex justify-between py-1.5 border-b border-dashed border-line">
+        <span class="text-muted"><%= row[:label] %></span>
+        <b><%= row[:value] %></b>
+      </div>
+    <% end %>
+  </div>
+<% end %>

@@ -8,9 +8,14 @@
       <input type="text" placeholder="Search the forums..." class="px-2.5 py-1.5 border border-line rounded-[3px] text-xs w-[200px] [font-family:inherit]">
       <button class="px-3.5 py-1.5 border border-white/40 rounded-[3px] bg-white/8 text-white text-xs cursor-pointer [font-family:inherit] hover:bg-white/18">Search</button>
       <div class="w-px h-6 bg-white/25 mx-1"></div>
-      <span class="text-[#dbe4f5] text-xs">Welcome, <b>Guest</b>.</span>
-      <a href="#" class="px-3 py-1.5 border border-white/40 rounded-[3px] bg-white/10 text-white text-xs [font-family:inherit] inline-block hover:bg-white/20">Log In</a>
-      <a href="#" class="px-3 py-1.5 border border-register-line rounded-[3px] bg-register text-white text-xs font-bold [font-family:inherit] inline-block hover:opacity-90">Register</a>
+      <% if signed_in? %>
+        <span class="text-[#dbe4f5] text-xs">Welcome, <b><%= display_name %></b>.</span>
+        <%= button_to "Log Out", destroy_user_session_path, method: :delete, class: "px-3 py-1.5 border border-white/40 rounded-[3px] bg-white/10 text-white text-xs [font-family:inherit] inline-block hover:bg-white/20 cursor-pointer" %>
+      <% else %>
+        <span class="text-[#dbe4f5] text-xs">Welcome, <b>Guest</b>.</span>
+        <a href="<%= new_user_session_path %>" class="px-3 py-1.5 border border-white/40 rounded-[3px] bg-white/10 text-white text-xs [font-family:inherit] inline-block hover:bg-white/20">Log In</a>
+        <a href="<%= new_user_registration_path %>" class="px-3 py-1.5 border border-register-line rounded-[3px] bg-register text-white text-xs font-bold [font-family:inherit] inline-block hover:opacity-90">Register</a>
+      <% end %>
     </div>
   </div>
 </div>

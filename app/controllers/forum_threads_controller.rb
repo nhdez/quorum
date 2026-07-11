@@ -1,6 +1,4 @@
 class ForumThreadsController < ApplicationController
-  layout "forum"
-
   GROUP_COLORS = ForumsController::GROUP_COLORS
 
   AFFILIATIONS = [
