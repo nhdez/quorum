@@ -1,0 +1,14 @@
+<%= render Ui::PanelComponent.new(title: "Post Settings") do %>
+  <div class="p-4">
+    <p class="text-[11px] text-muted mb-3.5 italic">Applies to both new threads and replies. Leave blank for no limit.</p>
+
+    <%= form_with model: @post_setting, url: admin_post_settings_path, method: :patch, local: true do |f| %>
+      <div class="mb-3.5 max-w-[220px]">
+        <label class="block text-[11px] font-bold text-muted mb-1.5" for="post_setting_max_word_count">MAXIMUM WORD COUNT</label>
+        <%= f.number_field :max_word_count, min: 1, placeholder: "No limit", class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+      </div>
+
+      <%= f.submit "Save", class: "px-4.5 py-2 border border-register-line rounded-[3px] bg-register text-white text-xs font-bold cursor-pointer [font-family:inherit] hover:opacity-90" %>
+    <% end %>
+  </div>
+<% end %>

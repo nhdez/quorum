@@ -14,12 +14,14 @@
         <%= f.text_field :title, class: "w-full box-border p-2 border border-line rounded-[3px] [font-family:inherit] text-[13px]" %>
       </div>
 
-      <div class="mb-3.5">
+      <div class="mb-3.5" data-controller="word-count" data-word-count-max-value="<%= @max_word_count %>">
         <div class="text-[11px] font-bold text-muted mb-1">BODY</div>
-        <%= f.rich_textarea :body do %>
+        <%= f.rich_textarea :body, data: { word_count_target: "editor", action: "lexxy:change->word-count#update" } do %>
           <lexxy-prompt trigger="@" src="<%= mentions_path %>" name="mention" remote-filtering empty-results="No users found">
           </lexxy-prompt>
+          <%= render "shared/emoji_prompt" %>
         <% end %>
+        <div class="text-[11px] text-muted mt-1" data-word-count-target="output"></div>
       </div>
 
       <%= f.submit "Create Thread", class: "py-2.5 px-4 border border-register-line rounded-[3px] bg-register text-white text-[13px] font-bold cursor-pointer [font-family:inherit] hover:opacity-90" %>

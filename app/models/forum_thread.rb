@@ -4,6 +4,7 @@ class ForumThread < ApplicationRecord
   include FallacyScannable
   include Votable
   include Mentionable
+  include WordCountLimited
 
   belongs_to :forum
   belongs_to :user

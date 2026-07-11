@@ -2,6 +2,7 @@ class ThreadReply < ApplicationRecord
   include FallacyScannable
   include Votable
   include Mentionable
+  include WordCountLimited
 
   belongs_to :forum_thread
   belongs_to :user

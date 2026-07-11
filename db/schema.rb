@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_11_190000) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_11_200000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -184,6 +184,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_190000) do
     t.index ["event_id"], name: "index_noticed_notifications_on_event_id"
     t.index ["read_at"], name: "index_noticed_notifications_on_read_at"
     t.index ["recipient_type", "recipient_id"], name: "index_noticed_notifications_on_recipient"
+  end
+
+  create_table "post_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "max_word_count"
+    t.datetime "updated_at", null: false
   end
 
   create_table "rank_conditions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

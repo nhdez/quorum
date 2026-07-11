@@ -7,7 +7,7 @@
 <%= render Ui::PaginationComponent.new(pages: @pages) %>
 
 <% if current_user %>
-  <%= render Threads::ReplyBoxComponent.new(reply_path: forum_thread_thread_replies_path(@forum, @thread)) %>
+  <%= render Threads::ReplyBoxComponent.new(reply_path: forum_thread_thread_replies_path(@forum, @thread), max_word_count: @max_word_count) %>
 <% else %>
   <div class="text-xs text-muted my-4"><%= link_to "Log in", new_user_session_path, class: "text-link hover:underline" %> to reply to this thread.</div>
 <% end %>

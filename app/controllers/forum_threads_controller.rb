@@ -1,5 +1,6 @@
 class ForumThreadsController < ApplicationController
   before_action :authenticate_user!, only: %i[new create]
+  before_action :set_max_word_count
 
   AFFILIATIONS = [
     { id: "progressive", name: "Progressive Alliance", color: "#6b4fa0", votes: 214 },
@@ -49,6 +50,10 @@ class ForumThreadsController < ApplicationController
   end
 
   private
+
+  def set_max_word_count
+    @max_word_count = PostSetting.instance.max_word_count
+  end
 
   def thread_params
     params.require(:forum_thread).permit(:title, :body)

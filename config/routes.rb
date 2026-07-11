@@ -47,6 +47,7 @@ Rails.application.routes.draw do
     resource :storage_settings, only: %i[edit update] do
       post :test, on: :collection
     end
+    resource :post_settings, only: %i[edit update]
     resources :members, only: %i[index destroy] do
       member do
         patch :toggle_admin

@@ -13,6 +13,7 @@ module Admin
       { key: :announcements, label: "Announcements", path: :admin_announcements_path },
       { key: :smtp_settings, label: "Email (SMTP)", path: :edit_admin_smtp_settings_path },
       { key: :storage_settings, label: "Object Storage", path: :edit_admin_storage_settings_path },
+      { key: :post_settings, label: "Post Settings", path: :edit_admin_post_settings_path },
       { key: :settings, label: "Settings", path: :edit_admin_ai_settings_path }
     ].freeze
 
