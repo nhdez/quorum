@@ -3,7 +3,7 @@ module Admin
     LINKS = [
       { key: :dashboard, label: "Dashboard", path: :admin_dashboard_path },
       { key: :members, label: "Members" },
-      { key: :boards, label: "Forums & Boards" },
+      { key: :boards, label: "Forums & Boards", path: :admin_boards_path },
       { key: :reports, label: "Reported Posts" },
       { key: :bias_bot, label: "AI Bias Bot" },
       { key: :fallacy_detection, label: "Fallacy Detection", path: :admin_fallacy_definitions_path },

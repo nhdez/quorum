@@ -25,6 +25,13 @@ Rails.application.routes.draw do
       post :test, on: :collection
     end
     resources :fallacy_definitions, only: %i[index update]
+    get "boards", to: "boards#index", as: :boards
+    resources :forum_categories, only: %i[create update destroy] do
+      collection { patch :reorder }
+    end
+    resources :forums, only: %i[create update destroy] do
+      collection { patch :reorder }
+    end
     resources :pending_registrations, only: %i[destroy] do
       member { patch :confirm }
     end

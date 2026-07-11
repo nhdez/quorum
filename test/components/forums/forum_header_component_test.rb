@@ -7,15 +7,15 @@ module Forums
       render_inline(ForumHeaderComponent.new(
         title: "Politics & Current Events",
         description: "Debate the issues of the day.",
-        subforums: [ "Elections 2026", "International Affairs" ],
+        subforums: [ { name: "Elections 2026", path: "/forums/elections-2026" }, { name: "International Affairs", path: "/forums/international-affairs" } ],
         new_thread_path: "/forums/x/threads/new",
         current_user: user
       ))
 
       assert_text "Politics & Current Events"
       assert_text "Debate the issues of the day."
-      assert_text "Elections 2026"
-      assert_text "International Affairs"
+      assert_selector "a[href='/forums/elections-2026']", text: "Elections 2026"
+      assert_selector "a[href='/forums/international-affairs']", text: "International Affairs"
       assert_selector "a", text: "+ New Thread"
     end
 

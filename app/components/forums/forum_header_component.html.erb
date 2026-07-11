@@ -14,8 +14,8 @@
   <% if subforums.present? %>
     <div class="px-4 py-2 text-[11px] text-muted border-b border-line">
       Sub-boards:
-      <% subforums.each_with_index do |name, i| %>
-        <a href="#" class="text-link ml-1 hover:underline"><%= name %></a><%= "," if i < subforums.length - 1 %>
+      <% subforums.each_with_index do |subforum, i| %>
+        <%= link_to subforum[:name], subforum[:path], class: "text-link ml-1 hover:underline" %><%= "," if i < subforums.length - 1 %>
       <% end %>
     </div>
   <% end %>

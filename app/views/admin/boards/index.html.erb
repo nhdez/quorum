@@ -1,0 +1,79 @@
+<%= render Ui::PanelComponent.new(title: "Categories") do %>
+  <div class="p-3.5">
+    <div data-controller="sortable" data-sortable-url-value="<%= reorder_admin_forum_categories_path %>">
+      <% @categories.each do |category| %>
+        <div data-sortable-target="item" data-id="<%= category.id %>" data-action="dragstart->sortable#dragStart dragover->sortable#dragOver drop->sortable#drop dragend->sortable#dragEnd" class="flex items-center gap-2.5 py-2 border-b border-dashed border-line cursor-move">
+          <span class="text-muted select-none">&#8942;&#8942;</span>
+          <%= form_with model: category, url: admin_forum_category_path(category), method: :patch, local: true, html: { class: "flex-1 flex items-center gap-2.5 flex-wrap" } do |f| %>
+            <%= f.text_field :title, class: "flex-1 min-w-[140px] px-2 py-1 border border-line rounded-[3px] text-xs" %>
+            <%= f.text_field :description, placeholder: "Description", class: "flex-[2] min-w-[200px] px-2 py-1 border border-line rounded-[3px] text-xs" %>
+            <label class="flex items-center gap-1 text-[11px] text-muted shrink-0"><%= f.check_box :is_visible %> Visible</label>
+            <%= f.submit "Save", class: "px-2.5 py-1 border border-line rounded-[3px] bg-row-alt text-ink text-[11px] font-bold cursor-pointer [font-family:inherit] hover:bg-line shrink-0" %>
+          <% end %>
+          <%= button_to "Delete", admin_forum_category_path(category), method: :delete, class: "px-2.5 py-1 border border-line rounded-[3px] bg-row-alt text-[#a05050] text-[11px] font-bold cursor-pointer [font-family:inherit] hover:bg-line shrink-0", data: { turbo_confirm: "Delete this category and all its forums?" } %>
+        </div>
+      <% end %>
+    </div>
+
+    <%= form_with model: @new_forum_category, url: admin_forum_categories_path, local: true, html: { class: "flex items-center gap-2.5 flex-wrap mt-3" } do |f| %>
+      <%= f.text_field :title, placeholder: "New category title", class: "flex-1 min-w-[140px] px-2 py-1 border border-line rounded-[3px] text-xs" %>
+      <%= f.text_field :description, placeholder: "Description", class: "flex-[2] min-w-[200px] px-2 py-1 border border-line rounded-[3px] text-xs" %>
+      <%= f.submit "Add Category", class: "px-2.5 py-1 border border-register-line rounded-[3px] bg-register text-white text-[11px] font-bold cursor-pointer [font-family:inherit] hover:opacity-90 shrink-0" %>
+    <% end %>
+  </div>
+<% end %>
+
+<% @categories.each do |category| %>
+  <div class="mt-3.5">
+    <%= render Ui::PanelComponent.new(title: "#{category.title} — Forums") do %>
+      <div class="p-3.5">
+        <% top_level_forums = @top_level_forums_by_category[category.id] || [] %>
+
+        <div data-controller="sortable" data-sortable-url-value="<%= reorder_admin_forums_path %>">
+          <% top_level_forums.each do |forum| %>
+            <div data-sortable-target="item" data-id="<%= forum.id %>" data-action="dragstart->sortable#dragStart dragover->sortable#dragOver drop->sortable#drop dragend->sortable#dragEnd" class="py-2 border-b border-dashed border-line cursor-move">
+              <div class="flex items-center gap-2.5 flex-wrap">
+                <span class="text-muted select-none">&#8942;&#8942;</span>
+                <%= form_with model: forum, url: admin_forum_path(forum), method: :patch, local: true, html: { class: "flex-1 flex items-center gap-2.5 flex-wrap" } do |f| %>
+                  <%= f.hidden_field :forum_category_id, value: category.id %>
+                  <%= f.text_field :title, class: "flex-1 min-w-[140px] px-2 py-1 border border-line rounded-[3px] text-xs" %>
+                  <%= f.text_field :description, placeholder: "Description", class: "flex-[2] min-w-[200px] px-2 py-1 border border-line rounded-[3px] text-xs" %>
+                  <label class="flex items-center gap-1 text-[11px] text-muted shrink-0"><%= f.check_box :is_visible %> Visible</label>
+                  <%= f.submit "Save", class: "px-2.5 py-1 border border-line rounded-[3px] bg-row-alt text-ink text-[11px] font-bold cursor-pointer [font-family:inherit] hover:bg-line shrink-0" %>
+                <% end %>
+                <%= button_to "Delete", admin_forum_path(forum), method: :delete, class: "px-2.5 py-1 border border-line rounded-[3px] bg-row-alt text-[#a05050] text-[11px] font-bold cursor-pointer [font-family:inherit] hover:bg-line shrink-0", data: { turbo_confirm: "Delete this forum and its subforums?" } %>
+              </div>
+
+              <% if forum.subforums.any? %>
+                <div class="ml-6 mt-1.5" data-controller="sortable" data-sortable-url-value="<%= reorder_admin_forums_path %>">
+                  <% forum.subforums.ordered.each do |subforum| %>
+                    <div data-sortable-target="item" data-id="<%= subforum.id %>" data-action="dragstart->sortable#dragStart dragover->sortable#dragOver drop->sortable#drop dragend->sortable#dragEnd" class="flex items-center gap-2.5 flex-wrap py-1.5 border-b border-dotted border-line cursor-move">
+                    <span class="text-muted select-none">&#8618;</span>
+                    <%= form_with model: subforum, url: admin_forum_path(subforum), method: :patch, local: true, html: { class: "flex-1 flex items-center gap-2.5 flex-wrap" } do |f| %>
+                      <%= f.hidden_field :forum_category_id, value: category.id %>
+                      <%= f.hidden_field :parent_forum_id, value: forum.id %>
+                      <%= f.text_field :title, class: "flex-1 min-w-[120px] px-2 py-1 border border-line rounded-[3px] text-xs" %>
+                      <%= f.text_field :description, placeholder: "Description", class: "flex-[2] min-w-[160px] px-2 py-1 border border-line rounded-[3px] text-xs" %>
+                      <label class="flex items-center gap-1 text-[11px] text-muted shrink-0"><%= f.check_box :is_visible %> Visible</label>
+                      <%= f.submit "Save", class: "px-2.5 py-1 border border-line rounded-[3px] bg-row-alt text-ink text-[11px] font-bold cursor-pointer [font-family:inherit] hover:bg-line shrink-0" %>
+                    <% end %>
+                    <%= button_to "Delete", admin_forum_path(subforum), method: :delete, class: "px-2.5 py-1 border border-line rounded-[3px] bg-row-alt text-[#a05050] text-[11px] font-bold cursor-pointer [font-family:inherit] hover:bg-line shrink-0", data: { turbo_confirm: "Delete this subforum?" } %>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
+        <%= form_with model: @new_forum, url: admin_forums_path, local: true, html: { class: "flex items-center gap-2.5 flex-wrap mt-3" } do |f| %>
+          <%= f.hidden_field :forum_category_id, value: category.id %>
+          <%= f.text_field :title, placeholder: "New forum title", class: "flex-1 min-w-[140px] px-2 py-1 border border-line rounded-[3px] text-xs" %>
+          <%= f.text_field :description, placeholder: "Description", class: "flex-[2] min-w-[200px] px-2 py-1 border border-line rounded-[3px] text-xs" %>
+          <%= f.select :parent_forum_id, options_for_select([ [ "None (top-level forum)", "" ] ] + top_level_forums.map { |f2| [ f2.title, f2.id ] }), {}, class: "px-2 py-1 border border-line rounded-[3px] text-xs shrink-0" %>
+          <%= f.submit "Add Forum", class: "px-2.5 py-1 border border-register-line rounded-[3px] bg-register text-white text-[11px] font-bold cursor-pointer [font-family:inherit] hover:opacity-90 shrink-0" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

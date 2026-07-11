@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_11_140003) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_11_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -144,10 +144,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_140003) do
     t.uuid "forum_category_id", null: false
     t.integer "index_order"
     t.boolean "is_visible", default: true
+    t.uuid "parent_forum_id"
     t.string "slug", null: false
     t.string "title"
     t.datetime "updated_at", null: false
     t.index ["forum_category_id"], name: "index_forums_on_forum_category_id"
+    t.index ["parent_forum_id"], name: "index_forums_on_parent_forum_id"
     t.index ["slug"], name: "index_forums_on_slug", unique: true
   end
 
@@ -215,6 +217,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_140003) do
   add_foreign_key "forum_threads", "forums"
   add_foreign_key "forum_threads", "users"
   add_foreign_key "forums", "forum_categories"
+  add_foreign_key "forums", "forums", column: "parent_forum_id"
   add_foreign_key "thread_replies", "forum_threads"
   add_foreign_key "thread_replies", "users"
   add_foreign_key "users", "factions"

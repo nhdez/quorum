@@ -8,10 +8,10 @@ class ForumsController < ApplicationController
     @posts_analyzed = "3,482"
     @bias_history = [ 44, 41, 47, 52, 49, 55, 58, 53, 46, 42, 39, 44, 48, 51 ]
 
-    @categories = ForumCategory.order(:index_order).map do |category|
+    @categories = ForumCategory.ordered.map do |category|
       {
         name: category.title,
-        forums: category.forums.order(:index_order).map { |forum| forum_row_data(forum) }
+        forums: category.forums.top_level.ordered.map { |forum| forum_row_data(forum) }
       }
     end
 
@@ -40,6 +40,7 @@ class ForumsController < ApplicationController
   def show
     @nav_current = :forums
     @forum = Forum.friendly.find(params[:id])
+    @subforums = @forum.subforums.ordered.map { |subforum| { name: subforum.title, path: forum_path(subforum) } }
 
     @breadcrumb = [
       { label: "Quorum", href: root_path },
@@ -62,7 +63,7 @@ class ForumsController < ApplicationController
       name: forum.title,
       desc: forum.description,
       icon_color: ICON_COLORS[forum.index_order.to_i % ICON_COLORS.length],
-      subforums: nil,
+      subforums: forum.subforums.ordered.pluck(:title).join(", ").presence,
       lean: nil,
       threads: threads_count.to_s,
       posts: posts_count.to_s,
