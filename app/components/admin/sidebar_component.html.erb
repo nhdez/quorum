@@ -1,9 +1,12 @@
 <div class="w-[200px] shrink-0 bg-row border-r border-line min-h-[calc(100vh-54px)]">
   <% links.each do |link| %>
-    <% if active?(link) %>
-      <div class="py-2.5 px-4 text-xs font-bold text-white bg-panel-to border-l-[3px] border-panel-to"><%= link[:label] %></div>
+    <% active_classes = "py-2.5 px-4 text-xs font-bold text-white bg-panel-to border-l-[3px] border-panel-to" %>
+    <% inactive_classes = "py-2.5 px-4 text-xs font-bold text-ink border-l-[3px] border-transparent hover:bg-row-alt" %>
+    <% classes = active?(link) ? active_classes : inactive_classes %>
+    <% if link[:path] %>
+      <%= link_to link[:label], public_send(link[:path]), class: "block #{classes}" %>
     <% else %>
-      <div class="py-2.5 px-4 text-xs font-bold text-ink border-l-[3px] border-transparent hover:bg-row-alt"><%= link[:label] %></div>
+      <div class="<%= classes %>"><%= link[:label] %></div>
     <% end %>
   <% end %>
 </div>
