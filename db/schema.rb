@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_11_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_11_160001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,6 +56,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_150000) do
     t.string "api_key"
     t.datetime "created_at", null: false
     t.string "model_id", default: "claude-opus-4-8", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "announcements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.text "text", null: false
     t.datetime "updated_at", null: false
   end
 
@@ -161,6 +168,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_150000) do
     t.datetime "updated_at", null: false
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource"
+  end
+
+  create_table "smtp_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "address"
+    t.string "authentication", default: "plain"
+    t.datetime "created_at", null: false
+    t.string "domain"
+    t.boolean "enable_starttls_auto", default: true, null: false
+    t.string "from_address"
+    t.string "password"
+    t.integer "port", default: 587
+    t.datetime "updated_at", null: false
+    t.string "user_name"
   end
 
   create_table "thread_replies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

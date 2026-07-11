@@ -1,0 +1,30 @@
+<%= render Ui::PanelComponent.new(title: "Members") do %>
+  <div class="grid grid-cols-[1fr_120px_100px_100px_260px] px-3.5 py-1.5 bg-row-alt text-[10px] font-bold text-muted border-b border-line uppercase">
+    <div>Email</div>
+    <div>Joined</div>
+    <div>Role</div>
+    <div>Status</div>
+    <div>Actions</div>
+  </div>
+
+  <% @users.each do |user| %>
+    <div class="grid grid-cols-[1fr_120px_100px_100px_260px] px-3.5 py-2.5 border-b border-line items-center text-xs">
+      <div>
+        <div class="font-bold"><%= user.email %></div>
+        <div class="text-[11px] text-muted"><%= user.post_count %> posts</div>
+      </div>
+      <div class="text-muted text-[11px]"><%= user.created_at.strftime("%b %-d, %Y") %></div>
+      <div style="color: <%= user.rank_color %>;" class="font-bold"><%= user.rank_label %></div>
+      <div class="text-[11px] <%= user.access_locked? ? "text-[#a05050] font-bold" : "text-muted" %>">
+        <%= user.access_locked? ? "Locked" : (user.confirmed? ? "Active" : "Unconfirmed") %>
+      </div>
+      <div class="flex gap-1.5 flex-wrap">
+        <%= button_to (user.has_role?(:admin) ? "Remove Admin" : "Make Admin"), toggle_admin_admin_member_path(user), method: :patch, class: "py-1 px-2 border border-line rounded-[3px] bg-row-alt text-ink text-[11px] cursor-pointer [font-family:inherit] hover:bg-line" %>
+        <%= button_to (user.access_locked? ? "Unlock" : "Lock"), toggle_lock_admin_member_path(user), method: :patch, class: "py-1 px-2 border border-line rounded-[3px] bg-row-alt text-ink text-[11px] cursor-pointer [font-family:inherit] hover:bg-line" %>
+        <%= button_to "Delete", admin_member_path(user), method: :delete, class: "py-1 px-2 border border-[#a05050] rounded-[3px] bg-row-alt text-[#a05050] text-[11px] cursor-pointer [font-family:inherit] hover:bg-[#f3dede]", form: { data: { turbo_confirm: "Delete #{user.email}? This can't be undone." } } %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<%= render Ui::PaginationComponent.new(pages: @pages) %>

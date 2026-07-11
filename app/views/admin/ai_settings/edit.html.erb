@@ -11,10 +11,8 @@
         <%= f.select :model_id, AiSetting::AVAILABLE_MODELS.map { |id, label| [ label, id ] }, {}, class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
       </div>
 
-      <div class="flex gap-2.5">
-        <%= f.submit "Save", class: "px-4.5 py-2 border border-register-line rounded-[3px] bg-register text-white text-xs font-bold cursor-pointer [font-family:inherit] hover:opacity-90" %>
-        <%= button_to "Test Connection", test_admin_ai_settings_path, method: :post, class: "px-4.5 py-2 border border-line rounded-[3px] bg-row text-ink text-xs font-bold cursor-pointer [font-family:inherit] hover:bg-row-alt" %>
-      </div>
+      <%= f.submit "Save", class: "px-4.5 py-2 border border-register-line rounded-[3px] bg-register text-white text-xs font-bold cursor-pointer [font-family:inherit] hover:opacity-90" %>
     <% end %>
+    <%= button_to "Test Connection", test_admin_ai_settings_path, method: :post, class: "px-4.5 py-2 border border-line rounded-[3px] bg-row text-ink text-xs font-bold cursor-pointer [font-family:inherit] hover:bg-row-alt mt-2.5" %>
   </div>
 <% end %>

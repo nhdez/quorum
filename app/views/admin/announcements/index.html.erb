@@ -1,0 +1,21 @@
+<%= render Ui::PanelComponent.new(title: "Announcements") do %>
+  <div class="p-3.5">
+    <p class="text-[11px] text-muted mb-3.5 italic">The most recent active announcement shows as a banner across the site. Deactivate one instead of deleting it to keep it for later.</p>
+
+    <% @announcements.each do |announcement| %>
+      <div class="flex items-start gap-2.5 py-2.5 border-b border-dashed border-line">
+        <%= form_with model: announcement, url: admin_announcement_path(announcement), method: :patch, local: true, html: { class: "flex-1 flex items-start gap-2.5" } do |f| %>
+          <%= f.text_area :text, rows: 2, class: "flex-1 px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+          <label class="flex items-center gap-1.5 text-[11px] text-muted shrink-0 mt-1.5"><%= f.check_box :active %> Active</label>
+          <%= f.submit "Save", class: "px-2.5 py-1 border border-line rounded-[3px] bg-row-alt text-ink text-[11px] font-bold cursor-pointer [font-family:inherit] hover:bg-line shrink-0 mt-1" %>
+        <% end %>
+        <%= button_to "Delete", admin_announcement_path(announcement), method: :delete, class: "px-2.5 py-1 border border-line rounded-[3px] bg-row-alt text-[#a05050] text-[11px] font-bold cursor-pointer [font-family:inherit] hover:bg-line shrink-0 mt-1", data: { turbo_confirm: "Delete this announcement?" } %>
+      </div>
+    <% end %>
+
+    <%= form_with model: @new_announcement, url: admin_announcements_path, local: true, html: { class: "flex items-start gap-2.5 mt-3" } do |f| %>
+      <%= f.text_area :text, rows: 2, placeholder: "New announcement text", class: "flex-1 px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+      <%= f.submit "Add Announcement", class: "px-2.5 py-1 border border-register-line rounded-[3px] bg-register text-white text-[11px] font-bold cursor-pointer [font-family:inherit] hover:opacity-90 shrink-0 mt-1" %>
+    <% end %>
+  </div>
+<% end %>

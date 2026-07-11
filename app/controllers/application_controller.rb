@@ -11,9 +11,15 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  before_action :set_announcement
+
   Page = Struct.new(:records, :number, :total_pages)
 
   protected
+
+  def set_announcement
+    @announcement = Announcement.active.ordered.first&.text
+  end
 
   def user_not_authorized
     redirect_to root_path, alert: "You are not authorized to do that."

@@ -32,6 +32,16 @@ Rails.application.routes.draw do
     resources :forums, only: %i[create update destroy] do
       collection { patch :reorder }
     end
+    resources :announcements, only: %i[index create update destroy]
+    resource :smtp_settings, only: %i[edit update] do
+      post :test, on: :collection
+    end
+    resources :members, only: %i[index destroy] do
+      member do
+        patch :toggle_admin
+        patch :toggle_lock
+      end
+    end
     resources :pending_registrations, only: %i[destroy] do
       member { patch :confirm }
     end
