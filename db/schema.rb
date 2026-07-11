@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_11_120002) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_11_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,6 +50,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_120002) do
     t.uuid "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "ai_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "api_key"
+    t.datetime "created_at", null: false
+    t.string "model_id", default: "claude-opus-4-8", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "factions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
