@@ -5,3 +5,9 @@
 <%= render Threads::PostListComponent.new(posts: @posts) %>
 
 <%= render Ui::PaginationComponent.new(pages: @pages) %>
+
+<% if current_user %>
+  <%= render Threads::ReplyBoxComponent.new(reply_path: forum_thread_thread_replies_path(@forum, @thread)) %>
+<% else %>
+  <div class="text-xs text-muted my-4"><%= link_to "Log in", new_user_session_path, class: "text-link hover:underline" %> to reply to this thread.</div>
+<% end %>

@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   root "forums#index"
 
   resources :forums, only: %i[index show] do
-    resources :threads, only: %i[show new create], controller: "forum_threads"
+    resources :threads, only: %i[show new create], controller: "forum_threads" do
+      resources :thread_replies, only: %i[create]
+    end
   end
 
   get "members/:id", to: "users#show", as: :member

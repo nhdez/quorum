@@ -1430,8 +1430,18 @@ git commit -m "Add real New Thread form"
 
 ### Task 9: Post Reply form
 
+> **Execution note:** `f.rich_textarea` only works inside a real Rails view
+> (Task 8's New Thread form), not inside a ViewComponent template. Lexxy
+> resolves via `ActionText::TagHelper` (with its own tag helper prepended
+> onto it) plus `main_app`, neither of which `ViewComponent::Base` includes
+> by default. Fixed with two additions to `app/components/application_component.rb`:
+> `include ActionText::TagHelper` and `delegate :main_app, to: :helpers`.
+> This is a one-time fix — any future component using `f.rich_textarea`
+> benefits from it automatically.
+
 **Files:**
 - Create: `app/controllers/thread_replies_controller.rb`
+- Modify: `app/components/application_component.rb`
 - Modify: `config/routes.rb`
 - Modify: `app/components/threads/reply_box_component.rb`, `app/components/threads/reply_box_component.html.erb`
 - Modify: `app/views/forum_threads/show.html.erb`
