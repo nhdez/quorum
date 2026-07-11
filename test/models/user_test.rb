@@ -31,8 +31,8 @@ class UserTest < ActiveSupport::TestCase
     user = User.create!(email: "postcounttest@example.com", password: "password123", password_confirmation: "password123")
     category = ForumCategory.create!(title: "Cat", slug: "cat-postcount")
     forum = Forum.create!(forum_category: category, title: "Forum", slug: "forum-postcount")
-    thread = ForumThread.create!(forum: forum, title: "A thread", slug: "a-thread-postcount", user: user)
-    ThreadReply.create!(forum_thread: thread, user: user)
+    thread = ForumThread.create!(forum: forum, title: "A thread", slug: "a-thread-postcount", user: user, body: "content")
+    ThreadReply.create!(forum_thread: thread, user: user, body: "a reply")
 
     assert_equal 2, user.post_count
   end

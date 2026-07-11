@@ -16,6 +16,7 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "lexxy", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
@@ -27,6 +28,13 @@
     <% end %>
 
     <div class="max-w-[1200px] mx-auto px-4 pt-5 pb-10">
+      <% if notice %>
+        <div class="mb-3.5 px-3.5 py-2 border border-line rounded-[3px] bg-row-alt text-xs"><%= notice %></div>
+      <% end %>
+      <% if alert %>
+        <div class="mb-3.5 px-3.5 py-2 border border-[#a05050] rounded-[3px] bg-[#f3dede] text-[#a05050] text-xs"><%= alert %></div>
+      <% end %>
+
       <%= yield %>
     </div>
 
