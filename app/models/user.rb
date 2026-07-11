@@ -9,6 +9,7 @@ class User < ApplicationRecord
   belongs_to :faction, optional: true
   has_many :forum_threads, dependent: :destroy
   has_many :thread_replies, dependent: :destroy
+  has_many :votes, dependent: :destroy
 
   AVATAR_COLORS = [ "#2455a4", "#7d97c2", "#1e8449", "#a85050", "#6b7aa8", "#8a8f9a", "#3f6fa0", "#9a8a3f" ].freeze
 
@@ -30,5 +31,33 @@ class User < ApplicationRecord
 
   def post_count
     forum_threads.count + thread_replies.count
+  end
+
+  def received_votes_count
+    Vote.where(votable_type: "ForumThread", votable_id: forum_thread_ids).count +
+      Vote.where(votable_type: "ThreadReply", votable_id: thread_reply_ids).count
+  end
+
+  def recommended_post_count
+    forum_threads.where(recommended: true).count + thread_replies.where(recommended: true).count
+  end
+
+  # Dispatches a RankCondition's metric key to the matching stat. Add a
+  # branch here when a new metric is introduced in RankCondition::METRICS.
+  def stat_for(metric)
+    case metric
+    when "post_count" then post_count
+    when "vote_count" then received_votes_count
+    when "recommended_count" then recommended_post_count
+    else 0
+    end
+  end
+
+  # The highest-tier Rank whose conditions this user currently satisfies,
+  # or nil if none are met yet. Computed on the fly (no stored column) —
+  # consistent with how rank_label/post_count already work, and avoids
+  # any staleness between a user's activity and their displayed rank.
+  def current_rank
+    Rank.ordered.reverse_each.find { |rank| rank.earned_by?(self) }
   end
 end

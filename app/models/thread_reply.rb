@@ -1,5 +1,6 @@
 class ThreadReply < ApplicationRecord
   include FallacyScannable
+  include Votable
 
   belongs_to :forum_thread
   belongs_to :user

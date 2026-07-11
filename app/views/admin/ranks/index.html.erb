@@ -1,0 +1,45 @@
+<%= render Ui::PanelComponent.new(title: "Ranks") do %>
+  <div class="p-3.5">
+    <p class="text-[11px] text-muted mb-3.5 italic">A user earns a rank once every one of its conditions is met (all conditions on a rank are required, not just one). A user's displayed rank is the highest tier they currently qualify for.</p>
+
+    <% @ranks.each do |rank| %>
+      <div class="py-2.5 border-b border-dashed border-line">
+        <div class="flex items-center gap-2.5 flex-wrap">
+          <%= form_with model: rank, url: admin_rank_path(rank), method: :patch, local: true, html: { class: "flex-1 flex items-center gap-2.5 flex-wrap" } do |f| %>
+            <span class="text-[11px] text-muted shrink-0">Tier</span>
+            <%= f.number_field :tier, class: "w-14 px-2 py-1 border border-line rounded-[3px] text-xs" %>
+            <%= f.text_field :name, class: "flex-1 min-w-[140px] px-2 py-1 border border-line rounded-[3px] text-xs" %>
+            <%= f.color_field :badge_color, class: "w-10 h-8 p-0.5 border border-line rounded-[3px]" %>
+            <%= f.submit "Save", class: "px-2.5 py-1 border border-line rounded-[3px] bg-row-alt text-ink text-[11px] font-bold cursor-pointer [font-family:inherit] hover:bg-line shrink-0" %>
+          <% end %>
+          <%= button_to "Delete", admin_rank_path(rank), method: :delete, class: "px-2.5 py-1 border border-line rounded-[3px] bg-row-alt text-[#a05050] text-[11px] font-bold cursor-pointer [font-family:inherit] hover:bg-line shrink-0", data: { turbo_confirm: "Delete this rank?" } %>
+        </div>
+
+        <div class="ml-4 mt-1.5">
+          <% rank.rank_conditions.each do |condition| %>
+            <div class="flex items-center gap-2.5 py-1 text-[11px]">
+              <span class="text-muted">&#8618;</span>
+              <span><%= condition.label %> &ge; <%= condition.threshold %></span>
+              <%= button_to "Remove", admin_rank_rank_condition_path(rank, condition), method: :delete, class: "px-2 py-0.5 border border-line rounded-[3px] bg-row-alt text-[#a05050] text-[10px] cursor-pointer [font-family:inherit] hover:bg-line" %>
+            </div>
+          <% end %>
+
+          <%= form_with model: RankCondition.new, url: admin_rank_rank_conditions_path(rank), local: true, html: { class: "flex items-center gap-2 mt-1" } do |f| %>
+            <%= f.select :metric, RankCondition::METRICS.map { |key, label| [ label, key ] }, { prompt: "Add condition..." }, class: "px-2 py-1 border border-line rounded-[3px] text-[11px]" %>
+            <span class="text-[11px] text-muted">&ge;</span>
+            <%= f.number_field :threshold, min: 1, class: "w-20 px-2 py-1 border border-line rounded-[3px] text-[11px]" %>
+            <%= f.submit "Add", class: "px-2 py-1 border border-line rounded-[3px] bg-row-alt text-ink text-[11px] font-bold cursor-pointer [font-family:inherit] hover:bg-line" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <%= form_with model: @new_rank, url: admin_ranks_path, local: true, html: { class: "flex items-center gap-2.5 flex-wrap mt-3" } do |f| %>
+      <span class="text-[11px] text-muted shrink-0">Tier</span>
+      <%= f.number_field :tier, class: "w-14 px-2 py-1 border border-line rounded-[3px] text-xs" %>
+      <%= f.text_field :name, placeholder: "New rank name", class: "flex-1 min-w-[140px] px-2 py-1 border border-line rounded-[3px] text-xs" %>
+      <%= f.color_field :badge_color, class: "w-10 h-8 p-0.5 border border-line rounded-[3px]" %>
+      <%= f.submit "Add Rank", class: "px-2.5 py-1 border border-register-line rounded-[3px] bg-register text-white text-[11px] font-bold cursor-pointer [font-family:inherit] hover:opacity-90 shrink-0" %>
+    <% end %>
+  </div>
+<% end %>

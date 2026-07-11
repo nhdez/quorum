@@ -4,6 +4,7 @@ module Admin
       { key: :dashboard, label: "Dashboard", path: :admin_dashboard_path },
       { key: :members, label: "Members", path: :admin_members_path },
       { key: :user_groups, label: "User Groups", path: :admin_user_groups_path },
+      { key: :ranks, label: "Ranks", path: :admin_ranks_path },
       { key: :boards, label: "Forums & Boards", path: :admin_boards_path },
       { key: :reports, label: "Reported Posts" },
       { key: :bias_bot, label: "AI Bias Bot" },

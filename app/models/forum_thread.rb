@@ -2,6 +2,7 @@ class ForumThread < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: :slugged
   include FallacyScannable
+  include Votable
 
   belongs_to :forum
   belongs_to :user

@@ -1,4 +1,4 @@
-<div class="grid grid-cols-[180px_1fr] border-b border-line <%= "bg-[#e7f3e9]" if post[:highlighted] %>">
+<div class="grid grid-cols-[180px_1fr] border-b border-line <%= post[:recommended] ? "bg-[#fdf6d8] border-l-4 border-l-[#c9a227]" : ("bg-[#e7f3e9]" if post[:highlighted]) %>">
 
   <!-- LEFT: user card -->
   <div class="relative border-r border-line overflow-hidden bg-[#1b2230]">
@@ -6,6 +6,11 @@
     <div class="relative z-[2] p-4 text-center">
       <a href="#" class="text-white font-bold text-[13px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)] hover:underline"><%= post[:user] %></a>
       <div class="text-[11px] text-white/85 mt-0.5 font-bold [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]"><%= post[:rank] %></div>
+
+      <% if post[:earned_rank_name].present? %>
+        <div class="inline-block text-[10px] font-bold text-white rounded-full px-2 py-0.5 mt-1" style="background: <%= post[:earned_rank_color] %>;"><%= post[:earned_rank_name] %></div>
+      <% end %>
+
       <div class="w-16 h-16 rounded-full text-white flex items-center justify-center font-bold text-2xl mx-auto my-2.5 border-2 border-white/40" style="background: <%= post[:avatar_color] %>;"><%= post[:initial] %></div>
 
       <% if post[:affiliation_name].present? %>
@@ -26,7 +31,12 @@
   <!-- RIGHT: post content -->
   <div class="p-4 flex flex-col">
     <div class="flex justify-between text-[11px] text-muted border-b border-dashed border-line pb-2 mb-2.5">
-      <span><%= post[:time] %></span>
+      <span>
+        <%= post[:time] %>
+        <% if post[:recommended] %>
+          <span class="ml-1.5 text-[10px] font-bold text-[#8a6d1f]">&#9733; Highlighted</span>
+        <% end %>
+      </span>
       <span>Post #<%= post[:number] %></span>
     </div>
 
@@ -56,7 +66,17 @@
       <div class="mt-2.5 pt-2 border-t border-dotted border-line text-[11px] italic text-muted"><%= post[:signature] %></div>
     <% end %>
 
-    <div class="flex gap-2 mt-3.5 justify-end">
+    <div class="flex gap-2 mt-3.5 justify-end items-center">
+      <% if post[:vote_path] %>
+        <%= button_to "#{post[:voted_by_current_user] ? "&#9650; Voted" : "&#9651; Vote"}&nbsp;(#{post[:votes_count]})".html_safe, post[:vote_path], method: :post, class: "px-3 py-1.5 border rounded-[3px] text-[11px] cursor-pointer [font-family:inherit] #{post[:voted_by_current_user] ? "border-register-line bg-register text-white" : "border-line bg-row-alt text-ink hover:bg-line"}" %>
+      <% else %>
+        <span class="text-[11px] text-muted px-1">&#9651; <%= post[:votes_count] %></span>
+      <% end %>
+
+      <% if post[:can_highlight] %>
+        <%= button_to (post[:recommended] ? "Unhighlight" : "Highlight"), post[:highlight_path], method: :post, class: "px-3 py-1.5 border rounded-[3px] text-[11px] cursor-pointer [font-family:inherit] #{post[:recommended] ? "border-[#c9a227] bg-[#fdf6d8] text-[#8a6d1f]" : "border-line bg-row-alt text-ink hover:bg-line"}" %>
+      <% end %>
+
       <button class="px-3 py-1.5 border border-line rounded-[3px] bg-row-alt text-ink text-[11px] cursor-pointer [font-family:inherit] hover:bg-line">Quote</button>
       <button class="px-3 py-1.5 border border-line rounded-[3px] bg-row-alt text-ink text-[11px] cursor-pointer [font-family:inherit] hover:bg-line">Report</button>
     </div>

@@ -19,6 +19,9 @@ Rails.application.routes.draw do
     member { patch :dismiss }
   end
 
+  post "votes/toggle", to: "votes#toggle", as: :toggle_vote
+  post "highlights/toggle", to: "highlights#toggle", as: :toggle_highlight
+
   namespace :admin do
     get "/", to: "dashboard#index", as: :dashboard
     resource :ai_settings, only: %i[edit update] do
@@ -37,6 +40,9 @@ Rails.application.routes.draw do
       post :test, on: :collection
     end
     resources :user_groups, only: %i[index create update destroy]
+    resources :ranks, only: %i[index create update destroy] do
+      resources :rank_conditions, only: %i[create destroy]
+    end
     resource :storage_settings, only: %i[edit update] do
       post :test, on: :collection
     end

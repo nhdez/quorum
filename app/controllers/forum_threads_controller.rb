@@ -26,7 +26,7 @@ class ForumThreadsController < ApplicationController
     @vote_choices = AFFILIATIONS.map { |a| a.merge(pct: total_votes.positive? ? ((a[:votes].to_f / total_votes) * 100).round : 0) }
     @vote_total = total_votes
 
-    page = paginate(@thread.thread_replies.order(:created_at))
+    page = paginate(@thread.thread_replies.order(recommended: :desc, created_at: :asc))
     @posts = [ post_view_data(@thread, number: 1) ] + page.records.each_with_index.map { |reply, i| post_view_data(reply, number: i + 2) }
     @pages = page_links(page, path: ->(number) { forum_thread_path(@forum, @thread, page: number) })
   end
@@ -56,11 +56,14 @@ class ForumThreadsController < ApplicationController
 
   def post_view_data(post, number:)
     user = post.user
+    earned_rank = user.current_rank
 
     {
       user: user.display_name,
       user_color: user.rank_color,
       rank: user.rank_label,
+      earned_rank_name: earned_rank&.name,
+      earned_rank_color: earned_rank&.badge_color,
       avatar_color: user.avatar_color,
       initial: user.display_name.first.upcase,
       joined: user.created_at.strftime("%b %Y"),
@@ -74,7 +77,13 @@ class ForumThreadsController < ApplicationController
       ai_flag_reason: nil,
       signature: nil,
       body: post.body,
-      fallacy_flags: fallacy_flags_data(post, user)
+      fallacy_flags: fallacy_flags_data(post, user),
+      recommended: post.recommended?,
+      can_highlight: current_user.present? && (current_user.has_role?(:admin) || current_user.has_role?(:moderator)),
+      highlight_path: toggle_highlight_path(highlightable_type: post.class.name, highlightable_id: post.id),
+      votes_count: post.votes.count,
+      voted_by_current_user: post.voted_by?(current_user),
+      vote_path: current_user ? toggle_vote_path(votable_type: post.class.name, votable_id: post.id) : nil
     }
   end
 

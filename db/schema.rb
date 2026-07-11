@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_11_170001) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_11_180002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -134,6 +134,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_170001) do
     t.boolean "is_draft", default: true
     t.boolean "is_sticky", default: false
     t.boolean "is_visible", default: true
+    t.boolean "recommended", default: false, null: false
     t.string "slug", null: false
     t.string "title"
     t.datetime "updated_at", null: false
@@ -158,6 +159,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_170001) do
     t.index ["forum_category_id"], name: "index_forums_on_forum_category_id"
     t.index ["parent_forum_id"], name: "index_forums_on_parent_forum_id"
     t.index ["slug"], name: "index_forums_on_slug", unique: true
+  end
+
+  create_table "rank_conditions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "metric", null: false
+    t.uuid "rank_id", null: false
+    t.integer "threshold", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rank_id"], name: "index_rank_conditions_on_rank_id"
+  end
+
+  create_table "ranks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "badge_color", default: "#8a6d1f", null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.integer "tier", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tier"], name: "index_ranks_on_tier", unique: true
   end
 
   create_table "roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -198,6 +217,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_170001) do
     t.boolean "can_be_quoted", default: true
     t.datetime "created_at", null: false
     t.uuid "forum_thread_id", null: false
+    t.boolean "recommended", default: false, null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
     t.index ["forum_thread_id"], name: "index_thread_replies_on_forum_thread_id"
@@ -251,6 +271,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_170001) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
+  create_table "votes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.uuid "votable_id", null: false
+    t.string "votable_type", null: false
+    t.index ["votable_type", "votable_id", "user_id"], name: "index_votes_uniqueness", unique: true
+    t.index ["votable_type", "votable_id"], name: "index_votes_on_votable_type_and_votable_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "fallacy_flags", "fallacy_definitions"
@@ -259,9 +289,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_170001) do
   add_foreign_key "forum_threads", "users"
   add_foreign_key "forums", "forum_categories"
   add_foreign_key "forums", "forums", column: "parent_forum_id"
+  add_foreign_key "rank_conditions", "ranks"
   add_foreign_key "thread_replies", "forum_threads"
   add_foreign_key "thread_replies", "users"
   add_foreign_key "users", "factions"
   add_foreign_key "users_roles", "roles"
   add_foreign_key "users_roles", "users"
+  add_foreign_key "votes", "users"
 end
