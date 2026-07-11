@@ -5,7 +5,7 @@ module Threads
     def base_post
       {
         user: "PoliticalJunkie88", user_color: "#2455a4", rank: "Senior Member",
-        avatar_color: "#2455a4", initial: "P", joined: "Mar 2019", post_count: "4,821", reputation: "+312",
+        avatar_color: "#2455a4", initial: "P", joined: "Mar 2019", post_count: "4,821",
         time: "Today, 08:02 AM", number: "1", highlighted: false,
         affiliation_name: nil, affiliation_color: nil, is_devils_advocate: false,
         ai_flag_reason: nil, signature: nil, body: "Hello world."
@@ -43,6 +43,11 @@ module Threads
     test "renders the signature only when present" do
       render_inline(PostComponent.new(post: base_post.merge(signature: "Some signature.")))
       assert_text "Some signature."
+    end
+
+    test "does not render a reputation line" do
+      render_inline(PostComponent.new(post: base_post))
+      assert_no_text "Reputation"
     end
   end
 end
