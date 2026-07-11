@@ -1,0 +1,25 @@
+<%= render Ui::BreadcrumbComponent.new(items: [
+  { label: "Quorum", href: root_path },
+  { label: @forum.title, href: forum_path(@forum) },
+  { label: "New Thread", current: true }
+]) %>
+
+<%= render Ui::PanelComponent.new(title: "Start a New Thread") do %>
+  <div class="p-5 flex flex-col gap-3.5">
+    <%= render "devise/shared/error_messages", resource: @thread %>
+
+    <%= form_with model: @thread, url: forum_threads_path(@forum) do |f| %>
+      <div class="mb-3.5">
+        <div class="text-[11px] font-bold text-muted mb-1">TITLE</div>
+        <%= f.text_field :title, class: "w-full box-border p-2 border border-line rounded-[3px] [font-family:inherit] text-[13px]" %>
+      </div>
+
+      <div class="mb-3.5">
+        <div class="text-[11px] font-bold text-muted mb-1">BODY</div>
+        <%= f.rich_textarea :body %>
+      </div>
+
+      <%= f.submit "Create Thread", class: "py-2.5 px-4 border border-register-line rounded-[3px] bg-register text-white text-[13px] font-bold cursor-pointer [font-family:inherit] hover:opacity-90" %>
+    <% end %>
+  </div>
+<% end %>
