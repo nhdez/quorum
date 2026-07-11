@@ -1,9 +1,7 @@
 <%= render Ui::BreadcrumbComponent.new(items: @breadcrumb) %>
 
-<%= render Forums::ForumHeaderComponent.new(title: @forum[:title], description: @forum[:description], subforums: @forum[:subforums]) %>
+<%= render Forums::ForumHeaderComponent.new(title: @forum.title, description: @forum.description, new_thread_path: new_forum_thread_path(@forum), current_user: current_user) %>
 
-<%= render Forums::ThreadListComponent.new(threads: @threads, thread_path: ->(thread) {
-  thread[:title] == "Midterm predictions thread" ? forum_thread_path(forum_id: params[:id], id: "midterm-predictions-thread") : "#"
-}) %>
+<%= render Forums::ThreadListComponent.new(threads: @threads, thread_path: ->(thread_data) { forum_thread_path(@forum, thread_data[:slug]) }) %>
 
 <%= render Ui::PaginationComponent.new(pages: @pages) %>

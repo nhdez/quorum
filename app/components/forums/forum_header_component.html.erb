@@ -4,7 +4,11 @@
       <div class="font-bold text-base"><%= title %></div>
       <div class="text-[11px] opacity-90 mt-0.5"><%= description %></div>
     </div>
-    <button class="px-3.5 py-1.5 border border-register-line rounded-[3px] bg-register text-white text-xs font-bold cursor-pointer [font-family:inherit] whitespace-nowrap hover:opacity-90">+ New Thread</button>
+    <% if current_user %>
+      <%= link_to "+ New Thread", new_thread_path, class: "px-3.5 py-1.5 border border-register-line rounded-[3px] bg-register text-white text-xs font-bold [font-family:inherit] whitespace-nowrap hover:opacity-90" %>
+    <% else %>
+      <%= link_to "Log in to post", new_user_session_path, class: "px-3.5 py-1.5 border border-line rounded-[3px] bg-row-alt text-ink text-xs font-bold [font-family:inherit] whitespace-nowrap hover:bg-line" %>
+    <% end %>
   </div>
 
   <% if subforums.present? %>

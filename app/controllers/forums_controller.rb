@@ -47,9 +47,9 @@ class ForumsController < ApplicationController
       { label: @forum.title, current: true }
     ]
 
-    @pagy, threads = pagy(@forum.forum_threads.order(created_at: :desc), items: 20)
-    @threads = threads.map { |thread| thread_row_data(thread) }
-    @pages = pagy_page_links(@pagy, path: ->(page) { forum_path(@forum, page: page) })
+    page = paginate(@forum.forum_threads.order(created_at: :desc))
+    @threads = page.records.map { |thread| thread_row_data(thread) }
+    @pages = page_links(page, path: ->(number) { forum_path(@forum, page: number) })
   end
 
   private

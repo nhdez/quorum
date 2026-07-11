@@ -21,14 +21,22 @@ class ForumsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get show" do
-    get forum_url(id: "politics-current-events")
+    category = ForumCategory.create!(title: "Show Cat", slug: "show-cat-controllertest")
+    forum = Forum.create!(forum_category: category, title: "Show Forum", slug: "show-forum-controllertest")
+
+    get forum_url(forum)
     assert_response :success
   end
 
-  test "renders the forum's threads" do
-    get forum_url(id: "politics-current-events")
+  test "renders the forum's real threads" do
+    user = User.create!(email: "showthreadtest@example.com", password: "password123", password_confirmation: "password123")
+    category = ForumCategory.create!(title: "Show Cat 2", slug: "show-cat-2-controllertest")
+    forum = Forum.create!(forum_category: category, title: "Show Forum 2", slug: "show-forum-2-controllertest")
+    ForumThread.create!(forum: forum, user: user, title: "Real Thread Title", slug: "real-thread-title-controllertest", body: "content")
 
-    assert_match "Midterm predictions thread", response.body
-    assert_match "Forum Rules", response.body
+    get forum_url(forum)
+
+    assert_match "Real Thread Title", response.body
+    assert_match user.display_name, response.body
   end
 end

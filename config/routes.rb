@@ -2,10 +2,23 @@ Rails.application.routes.draw do
   root "forums#index"
 
   resources :forums, only: %i[index show] do
-    resources :threads, only: %i[show], controller: "forum_threads"
+    resources :threads, only: %i[show new create], controller: "forum_threads"
   end
 
   get "members/:id", to: "users#show", as: :member
+
+  get "ai-flags", to: "ai_flags#index", as: :ai_flags
+
+  resources :affiliations, only: %i[index create] do
+    member { patch :join }
+  end
+
+  namespace :admin do
+    get "/", to: "dashboard#index", as: :dashboard
+    resources :pending_registrations, only: %i[destroy] do
+      member { patch :confirm }
+    end
+  end
 
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
