@@ -1,0 +1,16 @@
+<div class="flex-1 basis-[380px] min-w-[320px] border border-line rounded-[4px] bg-row shadow-sm p-3.5 flex flex-col gap-2.5" style="border-left: 6px solid <%= faction.color %>;">
+  <div class="flex justify-between items-start gap-2">
+    <div class="text-[15px] font-bold" style="color: <%= faction.color %>;"><%= faction.name %></div>
+    <div class="text-[11px] text-muted whitespace-nowrap bg-row-alt px-2 py-0.5 rounded-full"><%= member_count %> members</div>
+  </div>
+
+  <div class="text-xs text-muted"><%= faction.description %></div>
+
+  <% if current_user %>
+    <%= button_to (joined? ? "&#10003; Joined".html_safe : "Join Affiliation"), join_affiliation_path(faction), method: :patch,
+          class: "mt-1 py-2 px-3.5 rounded-[3px] text-xs font-bold cursor-pointer [font-family:inherit] hover:opacity-90 border",
+          style: joined? ? "border-color: #{faction.color}; background: #{faction.color}; color: #fff;" : "border-color: #{faction.color}; background: var(--color-row); color: #{faction.color};" %>
+  <% else %>
+    <%= link_to "Log in to join", new_user_session_path, class: "mt-1 py-2 px-3.5 rounded-[3px] text-xs font-bold text-center border hover:opacity-90", style: "border-color: #{faction.color}; color: #{faction.color};" %>
+  <% end %>
+</div>

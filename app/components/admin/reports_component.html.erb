@@ -1,0 +1,13 @@
+<%= render Ui::PanelComponent.new(title: "Reported Posts Awaiting Review") do %>
+  <% if reports.empty? %>
+    <div class="px-3.5 py-3 text-xs text-muted">No reports awaiting review.</div>
+  <% else %>
+    <% reports.each do |report| %>
+      <div class="px-3.5 py-3 border-b border-line">
+        <div class="text-xs font-bold text-link"><%= report[:thread] %></div>
+        <div class="text-[11px] text-muted mt-0.5 italic">&ldquo;<%= report[:excerpt] %>&rdquo;</div>
+        <div class="text-[11px] text-muted mt-0.5">Reported by <%= report[:reporter] %> &mdash; <%= report[:reason] %></div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

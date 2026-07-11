@@ -1,0 +1,24 @@
+<%= render Ui::PanelComponent.new(title: "🤖 AI Bias Bot Settings") do %>
+  <div class="p-4 flex gap-7.5 flex-wrap">
+    <div class="flex-1 min-w-[240px]">
+      <div class="text-[11px] font-bold text-muted mb-1.5">FLAGGING SENSITIVITY: <%= sensitivity %>%</div>
+      <div class="h-1.5 rounded-full bg-row-alt overflow-hidden">
+        <div class="h-full bg-panel-to" style="width: <%= sensitivity %>%;"></div>
+      </div>
+      <div class="flex justify-between text-[10px] text-muted mt-0.5">
+        <span>Lenient</span>
+        <span>Strict</span>
+      </div>
+      <div class="text-[11px] text-muted mt-2.5 italic">The bot only ever tags posts — it cannot edit, hide, or remove content. Settings here are read-only for now.</div>
+    </div>
+    <div class="flex-1 min-w-[240px] flex flex-col gap-2">
+      <div class="text-[11px] font-bold text-muted mb-0.5">DETECTION CATEGORIES</div>
+      <% toggles.each do |toggle| %>
+        <div class="flex items-center gap-2 text-xs">
+          <span class="<%= toggle[:on] ? "text-[#3f9142]" : "text-muted" %>"><%= toggle[:on] ? "●" : "○" %></span>
+          <%= toggle[:label] %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

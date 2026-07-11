@@ -3,9 +3,9 @@ module Ui
     LINKS = [
       { key: :home, label: "Home", href: "/" },
       { key: :forums, label: "Forums", href: "/" },
-      { key: :affiliations, label: "Affiliations", href: "#" },
+      { key: :affiliations, label: "Affiliations", href: "/affiliations" },
       { key: :members, label: "Member List", href: "/members/political-junkie-88" },
-      { key: :ai_flags, label: "AI Flags", href: "#" },
+      { key: :ai_flags, label: "AI Flags", href: "/ai-flags" },
       { key: :calendar, label: "Calendar", href: "#" },
       { key: :search, label: "Search", href: "#" },
       { key: :rules, label: "Rules", href: "#" }

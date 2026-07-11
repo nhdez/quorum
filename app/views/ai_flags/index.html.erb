@@ -1,0 +1,8 @@
+<%= render Ui::BreadcrumbComponent.new(items: [ { label: "Quorum", href: root_path }, { label: "AI Flag Transparency Log", current: true } ]) %>
+
+<div class="mb-2">
+  <div class="text-xl font-bold">AI Flag Transparency Log</div>
+  <div class="text-xs text-muted mt-1 max-w-[680px]">A public record of every post our bot has flagged for possible bias or ad hominem language. Flags are informational only — the bot cannot edit, hide, or delete anything. Nothing here reflects a moderation action.</div>
+</div>
+
+<%= render AiFlags::FlagLogComponent.new(flags: @flags) %>

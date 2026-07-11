@@ -1,0 +1,27 @@
+<%= render Ui::PanelComponent.new(title: "Pending Registrations") do %>
+  <div class="grid grid-cols-[1fr_1fr_140px_160px] px-3.5 py-1.5 bg-row-alt text-[10px] font-bold text-muted border-b border-line uppercase">
+    <div>Email</div>
+    <div>Registered</div>
+    <div>Confirmation Sent</div>
+    <div>Action</div>
+  </div>
+
+  <% if users.empty? %>
+    <div class="px-3.5 py-3 text-xs text-muted">No pending registrations.</div>
+  <% else %>
+    <% users.each do |user| %>
+      <div class="grid grid-cols-[1fr_1fr_140px_160px] px-3.5 py-2.5 border-b border-line items-center text-xs">
+        <div class="font-bold"><%= user.email %></div>
+        <div class="text-muted"><%= user.created_at.strftime("%b %-d, %Y") %></div>
+        <div class="text-muted text-[11px]"><%= user.confirmation_sent_at&.strftime("%b %-d, %Y") || "—" %></div>
+        <div class="flex gap-1.5">
+          <%= button_to "Approve", confirm_admin_pending_registration_path(user), method: :patch,
+                class: "py-1 px-2.5 border border-register-line rounded-[3px] bg-register text-white text-[11px] cursor-pointer [font-family:inherit] hover:opacity-90" %>
+          <%= button_to "Reject", admin_pending_registration_path(user), method: :delete,
+                class: "py-1 px-2.5 border border-[#a05050] rounded-[3px] bg-row-alt text-[#a05050] text-[11px] cursor-pointer [font-family:inherit] hover:bg-[#f3dede]",
+                form: { data: { turbo_confirm: "Reject and delete this registration?" } } %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

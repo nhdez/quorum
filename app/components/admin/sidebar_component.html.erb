@@ -1,0 +1,9 @@
+<div class="w-[200px] shrink-0 bg-row border-r border-line min-h-[calc(100vh-54px)]">
+  <% links.each do |link| %>
+    <% if active?(link) %>
+      <div class="py-2.5 px-4 text-xs font-bold text-white bg-panel-to border-l-[3px] border-panel-to"><%= link[:label] %></div>
+    <% else %>
+      <div class="py-2.5 px-4 text-xs font-bold text-ink border-l-[3px] border-transparent hover:bg-row-alt"><%= link[:label] %></div>
+    <% end %>
+  <% end %>
+</div>

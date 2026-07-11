@@ -1,0 +1,26 @@
+<div class="border border-line rounded-[4px] bg-row overflow-hidden shadow-sm mt-4">
+  <div class="grid grid-cols-[200px_1fr_160px_140px] px-3.5 py-1.5 bg-row-alt text-[10px] font-bold text-muted border-b border-line uppercase tracking-wide">
+    <div>Thread</div>
+    <div>Flagged Excerpt &amp; Reason</div>
+    <div>Author</div>
+    <div>Time</div>
+  </div>
+
+  <% flags.each do |flag| %>
+    <div class="grid grid-cols-[200px_1fr_160px_140px] px-3.5 py-3 border-b border-line items-start hover:bg-row-alt">
+      <div>
+        <a href="#" class="text-link font-bold text-xs hover:underline"><%= flag[:thread] %></a>
+      </div>
+      <div class="text-xs">
+        <div class="text-muted italic">&ldquo;<%= flag[:excerpt] %>&rdquo;</div>
+        <div class="mt-1 px-2.5 py-1.5 border border-dashed border-[#b8933a] rounded-[4px] bg-[#fbf3de] text-[11px] text-[#6b5220] inline-block">
+          <b>&#129302;</b> <%= flag[:reason] %>
+        </div>
+      </div>
+      <div class="text-xs">
+        <a href="#" class="font-bold hover:underline" style="color: <%= flag[:user_color] %>;"><%= flag[:user] %></a>
+      </div>
+      <div class="text-[11px] text-muted"><%= flag[:time] %></div>
+    </div>
+  <% end %>
+</div>

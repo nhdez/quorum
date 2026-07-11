@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Admin — Quorum" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-page text-ink text-[13px] leading-normal [font-family:Verdana,Geneva,Arial,sans-serif]">
+    <%= render Admin::TopBarComponent.new(current_user: current_user) %>
+
+    <div class="flex max-w-[1400px] mx-auto">
+      <%= render Admin::SidebarComponent.new(current: @admin_nav_current || :dashboard) %>
+
+      <div class="flex-1 p-5 min-w-0">
+        <% if notice %>
+          <div class="mb-3.5 px-3.5 py-2 border border-line rounded-[3px] bg-row-alt text-xs"><%= notice %></div>
+        <% end %>
+        <% if alert %>
+          <div class="mb-3.5 px-3.5 py-2 border border-[#a05050] rounded-[3px] bg-[#f3dede] text-[#a05050] text-xs"><%= alert %></div>
+        <% end %>
+
+        <%= yield %>
+      </div>
+    </div>
+  </body>
+</html>

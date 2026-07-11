@@ -1,0 +1,15 @@
+<div class="grid gap-3.5 mb-5" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+  <% @stat_cards.each do |card| %>
+    <%= render Admin::StatCardComponent.new(label: card[:label], value: card[:value], color: card[:color]) %>
+  <% end %>
+</div>
+
+<div class="mb-5">
+  <%= render Admin::BiasBotSettingsComponent.new(sensitivity: @sensitivity, toggles: @bot_toggles) %>
+</div>
+
+<div class="mb-5">
+  <%= render Admin::PendingRegistrationsComponent.new(users: @pending_registrations) %>
+</div>
+
+<%= render Admin::ReportsComponent.new(reports: @reports) %>
