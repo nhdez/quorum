@@ -47,6 +47,7 @@ gem "rolify"
 gem "pagy"
 gem "friendly_id"
 gem "anthropic"
+gem "aws-sdk-s3", require: false
 gem "lexxy", "~> 0.9.21"
 gem "tailwindcss-rails"
 

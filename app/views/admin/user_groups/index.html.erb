@@ -1,0 +1,39 @@
+<%= render Ui::PanelComponent.new(title: "User Groups") do %>
+  <div class="p-3.5">
+    <p class="text-[11px] text-muted mb-3.5 italic">Administrator, Moderator, and Registered are built-in and can't be renamed or removed, but their badge color and banner can still be customized. Specific permissions per group aren't wired up yet — for now these are just badges/branding.</p>
+
+    <% unless StorageSetting.instance.configured? %>
+      <div class="mb-3.5 px-3 py-2 border border-dashed border-[#b8933a] rounded-[4px] bg-[#fbf3de] text-[11px] text-[#6b5220]">
+        Object storage isn't configured — uploaded banners are stored on local disk and will be lost on redeploy or container restart. Configure it under <%= link_to "Object Storage", edit_admin_storage_settings_path, class: "text-link hover:underline" %>.
+      </div>
+    <% end %>
+
+    <% @user_groups.each do |group| %>
+      <div class="flex items-start gap-2.5 py-2.5 border-b border-dashed border-line flex-wrap">
+        <%= form_with model: group, url: admin_user_group_path(group), method: :patch, local: true, multipart: true, html: { class: "flex-1 flex items-center gap-2.5 flex-wrap" } do |f| %>
+          <% if group.system_group? %>
+            <div class="flex-1 min-w-[140px] px-2 py-1 text-xs font-bold" style="color: <%= group.badge_color %>;"><%= group.name %> <span class="text-[10px] text-muted font-normal">(default)</span></div>
+          <% else %>
+            <%= f.text_field :name, class: "flex-1 min-w-[140px] px-2 py-1 border border-line rounded-[3px] text-xs" %>
+          <% end %>
+          <%= f.color_field :badge_color, class: "w-10 h-8 p-0.5 border border-line rounded-[3px]" %>
+          <%= f.file_field :banner, accept: "image/*", class: "text-[11px]" %>
+          <% if group.banner.attached? %>
+            <%= image_tag group.banner, class: "h-6 rounded-[2px]" %>
+          <% end %>
+          <%= f.submit "Save", class: "px-2.5 py-1 border border-line rounded-[3px] bg-row-alt text-ink text-[11px] font-bold cursor-pointer [font-family:inherit] hover:bg-line shrink-0" %>
+        <% end %>
+        <% unless group.system_group? %>
+          <%= button_to "Delete", admin_user_group_path(group), method: :delete, class: "px-2.5 py-1 border border-line rounded-[3px] bg-row-alt text-[#a05050] text-[11px] font-bold cursor-pointer [font-family:inherit] hover:bg-line shrink-0", data: { turbo_confirm: "Delete this group?" } %>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= form_with model: @new_user_group, url: admin_user_groups_path, local: true, multipart: true, html: { class: "flex items-center gap-2.5 flex-wrap mt-3" } do |f| %>
+      <%= f.text_field :name, placeholder: "New group name", class: "flex-1 min-w-[140px] px-2 py-1 border border-line rounded-[3px] text-xs" %>
+      <%= f.color_field :badge_color, class: "w-10 h-8 p-0.5 border border-line rounded-[3px]" %>
+      <%= f.file_field :banner, accept: "image/*", class: "text-[11px]" %>
+      <%= f.submit "Add Group", class: "px-2.5 py-1 border border-register-line rounded-[3px] bg-register text-white text-[11px] font-bold cursor-pointer [font-family:inherit] hover:opacity-90 shrink-0" %>
+    <% end %>
+  </div>
+<% end %>

@@ -36,6 +36,10 @@ Rails.application.routes.draw do
     resource :smtp_settings, only: %i[edit update] do
       post :test, on: :collection
     end
+    resources :user_groups, only: %i[index create update destroy]
+    resource :storage_settings, only: %i[edit update] do
+      post :test, on: :collection
+    end
     resources :members, only: %i[index destroy] do
       member do
         patch :toggle_admin

@@ -1,0 +1,39 @@
+<%= render Ui::PanelComponent.new(title: "Object Storage (S3-compatible)") do %>
+  <div class="p-4">
+    <div class="mb-3.5 px-3 py-2 border border-dashed border-[#b8933a] rounded-[4px] bg-[#fbf3de] text-[11px] text-[#6b5220]">
+      <b>Without this configured, uploaded files are ephemeral</b> — they're written to local disk on whichever container happens to handle the request, and will be lost on the next deploy or container restart. Configure a bucket below to make uploads (like user group banners) persist permanently.
+    </div>
+    <p class="text-[11px] text-muted mb-3.5">Works with AWS S3 or any S3-compatible provider — MinIO, Backblaze B2, DigitalOcean Spaces, Cloudflare R2, etc. Set an Endpoint for non-AWS providers; leave it blank for real AWS S3.</p>
+
+    <%= form_with model: @storage_setting, url: admin_storage_settings_path, method: :patch, local: true do |f| %>
+      <div class="grid gap-3.5" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+        <div>
+          <label class="block text-[11px] font-bold text-muted mb-1.5" for="storage_setting_bucket">BUCKET</label>
+          <%= f.text_field :bucket, placeholder: "my-quorum-uploads", class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-muted mb-1.5" for="storage_setting_region">REGION</label>
+          <%= f.text_field :region, placeholder: "us-east-1", class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-muted mb-1.5" for="storage_setting_endpoint">ENDPOINT (non-AWS providers only)</label>
+          <%= f.text_field :endpoint, placeholder: "https://s3.us-west-000.backblazeb2.com", class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-muted mb-1.5" for="storage_setting_access_key_id">ACCESS KEY ID</label>
+          <%= f.text_field :access_key_id, class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-muted mb-1.5" for="storage_setting_secret_access_key">SECRET ACCESS KEY</label>
+          <%= f.password_field :secret_access_key, placeholder: @storage_setting.secret_access_key.present? ? "•••••••••••••••• (unchanged)" : "", class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+        </div>
+        <div class="flex items-end">
+          <label class="flex items-center gap-1.5 text-[11px] text-muted"><%= f.check_box :force_path_style %> Force path-style URLs (needed by most non-AWS providers)</label>
+        </div>
+      </div>
+
+      <%= f.submit "Save", class: "px-4.5 py-2 border border-register-line rounded-[3px] bg-register text-white text-xs font-bold cursor-pointer [font-family:inherit] hover:opacity-90 mt-3.5" %>
+    <% end %>
+    <%= button_to "Test Connection", test_admin_storage_settings_path, method: :post, class: "px-4.5 py-2 border border-line rounded-[3px] bg-row text-ink text-xs font-bold cursor-pointer [font-family:inherit] hover:bg-row-alt mt-2.5" %>
+  </div>
+<% end %>

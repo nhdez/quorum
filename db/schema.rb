@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_11_160001) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_11_170001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -183,6 +183,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_160001) do
     t.string "user_name"
   end
 
+  create_table "storage_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "access_key_id"
+    t.string "bucket"
+    t.datetime "created_at", null: false
+    t.string "endpoint"
+    t.boolean "force_path_style", default: true, null: false
+    t.string "region"
+    t.string "secret_access_key"
+    t.datetime "updated_at", null: false
+  end
+
   create_table "thread_replies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.boolean "can_be_quoted", default: true
     t.datetime "created_at", null: false
@@ -191,6 +202,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_160001) do
     t.uuid "user_id", null: false
     t.index ["forum_thread_id"], name: "index_thread_replies_on_forum_thread_id"
     t.index ["user_id"], name: "index_thread_replies_on_user_id"
+  end
+
+  create_table "user_groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "badge_color", default: "#333333", null: false
+    t.datetime "created_at", null: false
+    t.integer "index_order"
+    t.string "name", null: false
+    t.boolean "system_group", default: false, null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_user_groups_on_name", unique: true
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
