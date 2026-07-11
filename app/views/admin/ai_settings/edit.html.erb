@@ -1,0 +1,20 @@
+<%= render Ui::PanelComponent.new(title: "AI Settings") do %>
+  <div class="p-4">
+    <%= form_with model: @ai_setting, url: admin_ai_settings_path, method: :patch, local: true do |f| %>
+      <div class="mb-3.5">
+        <label class="block text-[11px] font-bold text-muted mb-1.5" for="ai_setting_api_key">ANTHROPIC API KEY</label>
+        <%= f.password_field :api_key, placeholder: @ai_setting.configured? ? "•••••••••••••••• (unchanged)" : "sk-ant-...", class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+      </div>
+
+      <div class="mb-3.5">
+        <label class="block text-[11px] font-bold text-muted mb-1.5" for="ai_setting_model_id">MODEL</label>
+        <%= f.select :model_id, AiSetting::AVAILABLE_MODELS.map { |id, label| [ label, id ] }, {}, class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+      </div>
+
+      <div class="flex gap-2.5">
+        <%= f.submit "Save", class: "px-4.5 py-2 border border-register-line rounded-[3px] bg-register text-white text-xs font-bold cursor-pointer [font-family:inherit] hover:opacity-90" %>
+        <%= button_to "Test Connection", test_admin_ai_settings_path, method: :post, class: "px-4.5 py-2 border border-line rounded-[3px] bg-row text-ink text-xs font-bold cursor-pointer [font-family:inherit] hover:bg-row-alt" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

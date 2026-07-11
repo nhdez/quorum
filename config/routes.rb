@@ -17,6 +17,9 @@ Rails.application.routes.draw do
 
   namespace :admin do
     get "/", to: "dashboard#index", as: :dashboard
+    resource :ai_settings, only: %i[edit update] do
+      post :test, on: :collection
+    end
     resources :pending_registrations, only: %i[destroy] do
       member { patch :confirm }
     end

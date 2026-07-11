@@ -465,6 +465,8 @@ git commit -m "feat: add Ai::Client structured-completion service wrapper"
 
 - [ ] **Step 1: Write the failing tests**
 
+> **Execution note:** `minitest/mock` (and `Class#stub`) do not exist in this app's installed Minitest version (6.0.6 — mocking was split out entirely). Rather than add a mocking gem, `Admin::AiSettingsController` gets a `class_attribute :ai_client_factory, default: -> { Ai::Client.new }`, and the `test` action calls `ai_client_factory.call` instead of `Ai::Client.new` directly. Tests swap the factory (with an `ensure` block to restore it) instead of stubbing `Ai::Client.new`. This is reflected in the test and controller code below.
+
 Create `test/controllers/admin/ai_settings_controller_test.rb`:
 
 ```ruby
@@ -477,6 +479,14 @@ module Admin
       admin.add_role(:admin)
       post user_session_path, params: { user: { email: admin.email, password: "password123" } }
       admin
+    end
+
+    def with_ai_client_factory(factory)
+      original = Admin::AiSettingsController.ai_client_factory
+      Admin::AiSettingsController.ai_client_factory = factory
+      yield
+    ensure
+      Admin::AiSettingsController.ai_client_factory = original
     end
 
     test "redirects guests to the login page" do
@@ -531,7 +541,7 @@ module Admin
       sign_in_as_admin
       AiSetting.instance.update!(api_key: "sk-ant-existing")
 
-      Ai::Client.stub(:new, FakeSuccessClient.new) do
+      with_ai_client_factory(-> { FakeSuccessClient.new }) do
         post test_admin_ai_settings_url
       end
 
@@ -543,7 +553,7 @@ module Admin
       sign_in_as_admin
       AiSetting.instance.update!(api_key: "sk-ant-existing")
 
-      Ai::Client.stub(:new, FakeFailureClient.new) do
+      with_ai_client_factory(-> { FakeFailureClient.new }) do
         post test_admin_ai_settings_url
       end
 
@@ -593,6 +603,8 @@ Create `app/controllers/admin/ai_settings_controller.rb`:
 ```ruby
 module Admin
   class AiSettingsController < BaseController
+    class_attribute :ai_client_factory, default: -> { Ai::Client.new }
+
     before_action :set_admin_nav
     before_action :set_ai_setting
 
@@ -611,7 +623,7 @@ module Admin
     end
 
     def test
-      Ai::Client.new.structured_completion(
+      ai_client_factory.call.structured_completion(
         system: "You respond only with the requested JSON.",
         prompt: 'Reply with {"ok": true}.',
         schema: { type: "object", properties: { ok: { type: "boolean" } }, required: [ "ok" ], additionalProperties: false },
