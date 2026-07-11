@@ -10,7 +10,12 @@ class MentionsController < ApplicationController
     query = params[:filter].to_s.strip
 
     @users = if query.length >= MINIMUM_QUERY_LENGTH
-      User.where("email ILIKE ?", "#{query}%").limit(10)
+      sanitized = ActiveRecord::Base.sanitize_sql_like(query)
+      # Match only the local part of the email (== display_name, since
+      # there's no separate username column) — not the full email string,
+      # which would let a long-enough query probe past the "@" and confirm
+      # full email addresses/domains rather than just searching names.
+      User.where("split_part(email, '@', 1) ILIKE ?", "#{sanitized}%").limit(10)
     else
       User.none
     end
