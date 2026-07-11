@@ -2,6 +2,7 @@
 
 one:
   title: MyString
+  slug: my-string-one
   description: MyText
   index_order: 1
   is_visible: false
@@ -9,6 +10,7 @@ one:
 
 two:
   title: MyString
+  slug: my-string-two
   description: MyText
   index_order: 1
   is_visible: false

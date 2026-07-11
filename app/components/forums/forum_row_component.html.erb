@@ -1,0 +1,43 @@
+<div class="grid grid-cols-[48px_1fr_130px_240px] px-3.5 py-3 border-b border-line items-center hover:bg-row-alt">
+  <div>
+    <div class="w-3.5 h-3.5 rounded-sm" style="background: <%= forum[:icon_color] %>;"></div>
+  </div>
+
+  <div>
+    <a href="<%= forum[:path] || "#" %>" class="text-sm font-bold text-link hover:underline"><%= forum[:name] %></a>
+    <div class="text-muted mt-1 text-xs"><%= forum[:desc] %></div>
+
+    <% if forum[:subforums].present? %>
+      <div class="mt-1 text-[11px] text-muted">
+        &#8618; Sub-boards: <%= forum[:subforums] %>
+      </div>
+    <% end %>
+
+    <% if forum[:lean] %>
+      <div class="mt-1 flex items-center gap-1.5 text-[10px] text-muted">
+        <span>Board lean:</span>
+        <div class="relative w-15 h-1.5 rounded-full bg-linear-to-r from-[#2a56a8] via-[#8b8b93] to-[#b8302f]">
+          <div class="absolute -top-0.5 w-0.5 h-2.5 bg-ink -translate-x-1/2" style="left: <%= forum[:lean] %>%;"></div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="text-xs text-ink">
+    <div><%= forum[:threads] %> Threads</div>
+    <div class="text-muted"><%= forum[:posts] %> Posts</div>
+  </div>
+
+  <div class="text-[11px] flex gap-2 items-start">
+    <% if forum[:last_post] %>
+      <div class="w-7 h-7 rounded-full text-white flex items-center justify-center font-bold text-xs shrink-0" style="background: <%= forum[:last_post][:avatar_color] %>;"><%= forum[:last_post][:initial] %></div>
+      <div>
+        <a href="<%= forum[:last_post][:path] || "#" %>" class="text-link font-bold block hover:underline"><%= forum[:last_post][:thread] %></a>
+        <div class="text-muted mt-0.5">by <a href="#" class="font-bold hover:underline" style="color: <%= forum[:last_post][:user_color] %>;"><%= forum[:last_post][:user] %></a></div>
+        <div class="text-muted"><%= forum[:last_post][:time] %></div>
+      </div>
+    <% else %>
+      <div class="text-muted">No posts yet</div>
+    <% end %>
+  </div>
+</div>

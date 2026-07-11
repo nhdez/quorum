@@ -1,0 +1,15 @@
+<div class="border border-line rounded-[4px] mb-4.5 bg-row overflow-hidden shadow-sm">
+  <div class="bg-linear-to-b from-panel-from to-panel-to px-3.5 py-2 text-panel-heading font-bold text-[13px]">Latest Posts</div>
+  <div>
+    <% posts.each do |post| %>
+      <div class="flex justify-between items-center gap-2.5 px-3.5 py-1.5 border-b border-line text-xs hover:bg-row-alt">
+        <div class="overflow-hidden text-ellipsis text-nowrap">
+          <span class="text-muted"><%= post[:prefix] %></span>
+          <a href="<%= post[:path] || "#" %>" class="text-link font-bold hover:underline"><%= post[:title] %></a>
+          <span class="text-muted"> by <a href="#" class="font-bold hover:underline" style="color: <%= post[:user_color] %>;"><%= post[:user] %></a></span>
+        </div>
+        <div class="text-muted text-[11px] text-nowrap"><%= post[:time] %></div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="flex justify-center gap-1 my-4">
+  <% pages.each do |page| %>
+    <% if page[:href].nil? %>
+      <span class="px-2.5 py-1.5 text-xs font-bold text-muted"><%= page[:label] %></span>
+    <% elsif page[:current] %>
+      <span class="px-2.5 py-1.5 border border-line rounded-[3px] bg-panel-to text-white text-xs font-bold"><%= page[:label] %></span>
+    <% else %>
+      <a href="<%= page[:href] %>" class="px-2.5 py-1.5 border border-line rounded-[3px] bg-row text-link text-xs font-bold hover:bg-row-alt"><%= page[:label] %></a>
+    <% end %>
+  <% end %>
+</div>

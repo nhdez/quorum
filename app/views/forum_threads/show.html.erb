@@ -1,0 +1,9 @@
+<%= render Ui::BreadcrumbComponent.new(items: @breadcrumb) %>
+
+<%= render Threads::TitleBarComponent.new(title: @thread_title) %>
+<%= render Threads::VoteBarComponent.new(choices: @vote_choices, total: @vote_total) %>
+<%= render Threads::PostListComponent.new(posts: @posts) %>
+
+<%= render Ui::PaginationComponent.new(pages: @pages) %>
+
+<%= render Threads::ReplyBoxComponent.new %>

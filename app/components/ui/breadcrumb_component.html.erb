@@ -1,0 +1,14 @@
+<div class="text-xs mb-3.5 text-muted">
+  <% items.each_with_index do |item, i| %>
+    <% if item[:current] %>
+      <b class="text-ink"><%= item[:label] %></b>
+    <% elsif item[:href] %>
+      <a href="<%= item[:href] %>" class="text-link hover:underline"><%= item[:label] %></a>
+    <% else %>
+      <span><%= item[:label] %></span>
+    <% end %>
+    <% if i < items.length - 1 %>
+      <span> &rsaquo; </span>
+    <% end %>
+  <% end %>
+</div>

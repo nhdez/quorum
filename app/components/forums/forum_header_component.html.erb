@@ -1,0 +1,18 @@
+<div class="border border-line rounded-[4px] mb-3.5 bg-row overflow-hidden shadow-sm">
+  <div class="bg-linear-to-b from-panel-from to-panel-to px-4 py-3 text-panel-heading flex justify-between items-center flex-wrap gap-2.5">
+    <div>
+      <div class="font-bold text-base"><%= title %></div>
+      <div class="text-[11px] opacity-90 mt-0.5"><%= description %></div>
+    </div>
+    <button class="px-3.5 py-1.5 border border-register-line rounded-[3px] bg-register text-white text-xs font-bold cursor-pointer [font-family:inherit] whitespace-nowrap hover:opacity-90">+ New Thread</button>
+  </div>
+
+  <% if subforums.present? %>
+    <div class="px-4 py-2 text-[11px] text-muted border-b border-line">
+      Sub-boards:
+      <% subforums.each_with_index do |name, i| %>
+        <a href="#" class="text-link ml-1 hover:underline"><%= name %></a><%= "," if i < subforums.length - 1 %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

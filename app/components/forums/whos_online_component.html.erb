@@ -1,0 +1,16 @@
+<div class="flex-[2] min-w-[320px] border border-line rounded-[4px] bg-row overflow-hidden shadow-sm">
+  <div class="bg-linear-to-b from-panel-from to-panel-to px-3.5 py-2 text-panel-heading font-bold text-[13px]">Who's Online</div>
+  <div class="px-3.5 py-3">
+    <div class="text-xs mb-2.5 text-muted"><%= summary %></div>
+    <div class="flex flex-wrap gap-x-1 gap-y-1.5 text-xs">
+      <% users.each_with_index do |user, i| %>
+        <a href="#" class="font-bold hover:underline" style="color: <%= user[:group_color] %>;"><%= user[:name] %></a><span><%= i < users.length - 1 ? "," : "" %></span>
+      <% end %>
+    </div>
+    <div class="mt-3.5 pt-2.5 border-t border-dashed border-line text-[11px] text-muted flex gap-4 flex-wrap">
+      <% legend.each do |g| %>
+        <span><span class="font-bold" style="color: <%= g[:color] %>;">&#9632;</span> <%= g[:label] %></span>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="border border-line rounded-[4px] mb-4.5 bg-row overflow-hidden shadow-sm">
+  <div class="bg-linear-to-b from-panel-from to-panel-to px-3.5 py-2 text-panel-heading font-bold text-[13px]">
+    <%= name %>
+  </div>
+
+  <div class="grid grid-cols-[48px_1fr_130px_240px] px-3.5 py-1.5 bg-row-alt text-[10px] font-bold text-muted border-b border-line uppercase tracking-wide">
+    <div></div>
+    <div>Forum</div>
+    <div>Threads / Posts</div>
+    <div>Last Post</div>
+  </div>
+
+  <% forums.each do |forum| %>
+    <%= render Forums::ForumRowComponent.new(forum: forum) %>
+  <% end %>
+</div>

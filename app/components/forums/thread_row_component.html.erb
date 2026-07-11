@@ -1,0 +1,24 @@
+<div class="grid grid-cols-[48px_1fr_110px_220px] px-3.5 py-3 border-b border-line items-center hover:bg-row-alt">
+  <div class="text-base text-center"><%= thread[:marker] %></div>
+
+  <div>
+    <a href="<%= path %>" class="text-sm font-bold text-link hover:underline"><%= thread[:title] %></a>
+    <% if thread[:contested] %>
+      <span title="Affiliation vote on this thread is nearly evenly split" class="ml-1.5 text-[10px] font-bold text-[#8a6d1f] border border-[#c9a94a] bg-[#faf1d6] rounded-full px-[7px] py-px">&#9878; Contested</span>
+    <% end %>
+    <div class="text-muted mt-1 text-xs">Started by <a href="#" class="font-bold hover:underline" style="color: <%= thread[:author_color] %>;"><%= thread[:author] %></a></div>
+  </div>
+
+  <div class="text-xs text-ink">
+    <div><%= thread[:replies] %> Replies</div>
+    <div class="text-muted"><%= thread[:views] %> Views</div>
+  </div>
+
+  <div class="text-[11px] flex gap-2 items-start">
+    <div class="w-7 h-7 rounded-full text-white flex items-center justify-center font-bold text-xs shrink-0" style="background: <%= thread[:last_post][:avatar_color] %>;"><%= thread[:last_post][:initial] %></div>
+    <div>
+      <div class="text-muted">by <span class="font-bold" style="color: <%= thread[:last_post][:user_color] %>;"><%= thread[:last_post][:user] %></span></div>
+      <div class="text-muted"><%= thread[:last_post][:time] %></div>
+    </div>
+  </div>
+</div>

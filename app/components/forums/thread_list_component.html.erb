@@ -1,0 +1,12 @@
+<div class="border border-line rounded-[4px] mb-4.5 bg-row overflow-hidden shadow-sm">
+  <div class="grid grid-cols-[48px_1fr_110px_220px] px-3.5 py-1.5 bg-row-alt text-[10px] font-bold text-muted border-b border-line uppercase tracking-wide">
+    <div></div>
+    <div>Thread</div>
+    <div>Replies / Views</div>
+    <div>Last Post</div>
+  </div>
+
+  <% threads.each do |thread| %>
+    <%= render Forums::ThreadRowComponent.new(thread: thread, path: path_for(thread)) %>
+  <% end %>
+</div>

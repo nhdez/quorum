@@ -4,6 +4,7 @@ one:
   forum_category: one
   index_order: 1
   title: MyString
+  slug: my-string-one
   description: MyText
   affiliation_factor: 9.99
   is_visible: false
@@ -12,6 +13,7 @@ two:
   forum_category: two
   index_order: 1
   title: MyString
+  slug: my-string-two
   description: MyText
   affiliation_factor: 9.99
   is_visible: false

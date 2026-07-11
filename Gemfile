@@ -47,10 +47,14 @@ gem "rolify"
 gem "pagy"
 gem "friendly_id"
 gem "lexxy", "~> 0.9.21"
+gem "tailwindcss-rails"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+
+  # Generate fake data for seeds [https://github.com/faker-ruby/faker]
+  gem "faker"
 
   # Audits gems for known security defects (use config/bundler-audit.yml to ignore issues)
   gem "bundler-audit", require: false

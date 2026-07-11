@@ -1,0 +1,11 @@
+<div class="flex-1 min-w-[260px] border border-line rounded-[4px] bg-row overflow-hidden shadow-sm h-fit">
+  <div class="bg-linear-to-b from-panel-from to-panel-to px-3.5 py-2 text-panel-heading font-bold text-[13px]">Forum Statistics</div>
+  <div class="px-3.5 py-3 text-xs">
+    <div class="flex justify-between py-1"><span class="text-muted">Threads:</span><b><%= threads %></b></div>
+    <div class="flex justify-between py-1"><span class="text-muted">Posts:</span><b><%= posts %></b></div>
+    <div class="flex justify-between py-1"><span class="text-muted">Members:</span><b><%= members %></b></div>
+    <div class="mt-2 pt-2 border-t border-dashed border-line text-muted">
+      Welcome to our newest member, <a href="#" class="text-link font-bold hover:underline"><%= newest_member %></a>
+    </div>
+  </div>
+</div>

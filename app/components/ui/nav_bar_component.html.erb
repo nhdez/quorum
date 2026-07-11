@@ -1,0 +1,10 @@
+<div class="bg-nav border-b border-black/40">
+  <div class="max-w-[1200px] mx-auto px-4 flex gap-0.5">
+    <% links.each do |link| %>
+      <a
+        href="<%= link[:href] %>"
+        class="px-4 py-2.5 text-xs font-bold inline-block border-b-[3px] hover:bg-white/6 <%= active?(link) ? 'text-white border-white' : 'text-[#c7d3ea] border-transparent' %>"
+      ><%= link[:label] %></a>
+    <% end %>
+  </div>
+</div>

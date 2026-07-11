@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens ported from the classic palette in the design handoff.
+ * Generates utilities like bg-page, text-muted, border-line, etc.
+ */
+@theme {
+  --color-page: #c9d4e8;
+  --color-header-from: #4d6fa0;
+  --color-header-to: #263f66;
+  --color-header-subtext: #c6d4ea;
+  --color-nav: #1b3454;
+  --color-panel-from: #7d97c2;
+  --color-panel-to: #5675a8;
+  --color-panel-heading: #ffffff;
+  --color-line: #a3b4d1;
+  --color-row-alt: #eef1f8;
+  --color-row: #ffffff;
+  --color-link: #26529c;
+  --color-ink: #1c2733;
+  --color-muted: #5a6b85;
+  --color-announce-bg: #fdf4d8;
+  --color-announce-ink: #5f4e14;
+  --color-register: #3f9142;
+  --color-register-line: #2f7233;
+  --color-footer-ink: #aebcd6;
+  --color-footer-link: #9db3d9;
+}

@@ -1,0 +1,5 @@
+<div class="border border-t-0 border-line mb-1 bg-row shadow-sm">
+  <% posts.each do |post| %>
+    <%= render Threads::PostComponent.new(post: post) %>
+  <% end %>
+</div>

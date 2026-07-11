@@ -1,0 +1,18 @@
+<div class="border border-t-0 border-line bg-row-alt px-4 py-1.5 mb-1 flex items-center gap-2.5 flex-wrap text-[10px] text-muted">
+  <span class="whitespace-nowrap">Thread lean:</span>
+
+  <div class="flex h-1.5 w-[130px] rounded-[3px] overflow-hidden">
+    <% choices.each do |choice| %>
+      <div style="width: <%= choice[:pct] %>%; background: <%= choice[:color] %>;"></div>
+    <% end %>
+  </div>
+
+  <% choices.each do |choice| %>
+    <span>
+      <span style="color: <%= choice[:color] %>;">&#9632;</span>
+      <%= choice[:name] %> <%= choice[:pct] %>%
+    </span>
+  <% end %>
+
+  <span class="text-muted">&middot; <%= total %> votes</span>
+</div>
