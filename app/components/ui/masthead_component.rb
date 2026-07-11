@@ -11,7 +11,7 @@ module Ui
     end
 
     def display_name
-      current_user.email.split("@").first
+      current_user.display_name
     end
   end
 end
