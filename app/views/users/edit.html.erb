@@ -1,0 +1,55 @@
+<%= render Ui::BreadcrumbComponent.new(items: [
+  { label: "Quorum", href: root_path },
+  { label: "Edit Profile", current: true }
+]) %>
+
+<%= render Ui::PanelComponent.new(title: "Edit Profile") do %>
+  <div class="p-5">
+    <%= render "devise/shared/error_messages", resource: @user %>
+
+    <%= form_with model: @user, url: profile_path, method: :patch, local: true do |f| %>
+      <div class="grid gap-3.5 mb-3.5" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div>
+          <label class="block text-[11px] font-bold text-muted mb-1.5" for="user_first_name">FIRST NAME</label>
+          <%= f.text_field :first_name, class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-muted mb-1.5" for="user_last_name">LAST NAME</label>
+          <%= f.text_field :last_name, class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-muted mb-1.5" for="user_country_code">COUNTRY</label>
+          <%= f.select :country_code, options_for_select(Country.options_for_select, @user.country_code), { include_blank: "Not specified" }, class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-muted mb-1.5" for="user_date_of_birth">DATE OF BIRTH</label>
+          <%= f.date_field :date_of_birth, class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-muted mb-1.5" for="user_public_email">PUBLIC EMAIL</label>
+          <%= f.email_field :public_email, placeholder: "Shown on your profile — can differ from your login email", class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-muted mb-1.5" for="user_website_url">WEBSITE</label>
+          <%= f.url_field :website_url, placeholder: "https://…", class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+        </div>
+      </div>
+
+      <div class="mb-3.5">
+        <label class="block text-[11px] font-bold text-muted mb-1.5" for="user_motto">MOTTO</label>
+        <%= f.text_field :motto, maxlength: 140, placeholder: "A short tagline shown under your name", class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs" %>
+      </div>
+
+      <div class="mb-3.5">
+        <label class="block text-[11px] font-bold text-muted mb-1.5" for="user_signature">SIGNATURE</label>
+        <p class="text-[11px] text-muted mb-1.5">Shown under every post you make. Markdown only — <code>**bold**</code>, <code>_underline_</code>, <code>*italic*</code>, <code>&gt; quote</code>, <code>:emoji_name:</code>, and up to 3 images (<code>![alt](url)</code>). No headings or tables. <strong>Any signature with images is held for moderator approval before it goes live.</strong></p>
+        <%= f.text_area :signature, rows: 4, class: "w-full px-2.5 py-1.5 border border-line rounded-[3px] text-xs [font-family:monospace]" %>
+        <% if @user.signature_pending_review? %>
+          <p class="text-[11px] text-[#8a6d1f] mt-1">Your current signature contains images and is awaiting moderator approval — it won't show publicly until then.</p>
+        <% end %>
+      </div>
+
+      <%= f.submit "Save Profile", class: "py-2.5 px-4 border border-register-line rounded-[3px] bg-register text-white text-[13px] font-bold cursor-pointer [font-family:inherit] hover:opacity-90" %>
+    <% end %>
+  </div>
+<% end %>

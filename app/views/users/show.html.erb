@@ -5,6 +5,18 @@
 
 <%= render Users::ProfileHeaderComponent.new(profile: @profile) %>
 
+<% if @profile[:is_own_profile] %>
+  <div class="mb-4.5 -mt-2.5">
+    <%= link_to "Edit Profile", edit_profile_path, class: "text-xs text-link hover:underline" %>
+  </div>
+<% end %>
+
+<% if @signature_pending_review %>
+  <div class="mb-4.5 px-3 py-2 border border-dashed border-[#b8933a] rounded-[4px] bg-[#fbf3de] text-[11px] text-[#6b5220]">
+    Your signature contains images and is awaiting moderator approval — it isn't shown publicly yet.
+  </div>
+<% end %>
+
 <% if @notifications %>
   <%= render Ui::PanelComponent.new(title: "Notifications") do %>
     <% if @notifications.empty? %>

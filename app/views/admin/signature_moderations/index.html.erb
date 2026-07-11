@@ -1,0 +1,21 @@
+<%= render Ui::PanelComponent.new(title: "Signature Moderation Queue") do %>
+  <% if @users.empty? %>
+    <div class="px-3.5 py-3 text-xs text-muted">Nothing awaiting review.</div>
+  <% else %>
+    <% @users.each do |user| %>
+      <div class="px-3.5 py-3 border-b border-line">
+        <div class="flex justify-between items-start gap-2.5 mb-2">
+          <div class="text-xs font-bold"><%= user.display_name %> <span class="text-muted font-normal">(<%= user.email %>)</span></div>
+          <div class="flex gap-1.5 shrink-0">
+            <%= button_to "Approve", approve_admin_signature_moderation_path(user), method: :patch, class: "px-2.5 py-1 border border-register-line rounded-[3px] bg-register text-white text-[11px] font-bold cursor-pointer [font-family:inherit] hover:opacity-90" %>
+            <%= button_to "Reject", reject_admin_signature_moderation_path(user), method: :patch, class: "px-2.5 py-1 border border-[#a05050] rounded-[3px] bg-row-alt text-[#a05050] text-[11px] font-bold cursor-pointer [font-family:inherit] hover:bg-[#f3dede]", data: { turbo_confirm: "Reject and remove this signature?" } %>
+          </div>
+        </div>
+        <div class="text-[13px] p-2.5 border border-dashed border-line rounded-[3px] bg-row-alt [&_img]:max-w-[150px] [&_img]:max-h-[60px] [&_img]:object-contain [&_img]:inline-block">
+          <%= user.rendered_signature(viewer: user) %>
+        </div>
+        <div class="text-[10px] text-muted mt-1"><%= user.signature_image_count %> image(s)</div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

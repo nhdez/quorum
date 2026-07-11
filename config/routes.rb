@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   end
 
   get "members/:id", to: "users#show", as: :member
+  resource :profile, only: %i[edit update], controller: "users"
 
   get "ai-flags", to: "ai_flags#index", as: :ai_flags
 
@@ -48,6 +49,12 @@ Rails.application.routes.draw do
       post :test, on: :collection
     end
     resource :post_settings, only: %i[edit update]
+    resources :signature_moderations, only: %i[index] do
+      member do
+        patch :approve
+        patch :reject
+      end
+    end
     resources :members, only: %i[index destroy] do
       member do
         patch :toggle_admin

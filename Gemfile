@@ -49,6 +49,7 @@ gem "friendly_id"
 gem "anthropic"
 gem "aws-sdk-s3", require: false
 gem "noticed"
+gem "redcarpet"
 gem "lexxy", "~> 0.9.21"
 gem "tailwindcss-rails"
 

@@ -8,6 +8,12 @@ class User < ApplicationRecord
 
   # Lets a User be @mentioned as a rich-text attachment (see Mentionable).
   include ActionText::Attachable
+  include HasSignature
+
+  validates :country_code, inclusion: { in: Country::LIST.keys }, allow_blank: true
+  validates :public_email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
+  validates :website_url, format: { with: %r{\Ahttps?://[^\s/$.?#].[^\s]*\z}i }, allow_blank: true
+  validate :date_of_birth_is_plausible
 
   belongs_to :faction, optional: true
   has_many :forum_threads, dependent: :destroy
@@ -19,6 +25,18 @@ class User < ApplicationRecord
 
   def display_name
     email.split("@").first
+  end
+
+  def full_name
+    [ first_name, last_name ].compact_blank.join(" ").presence
+  end
+
+  def country_name
+    Country.name_for(country_code)
+  end
+
+  def flag_emoji
+    Country.flag_for(country_code)
   end
 
   def rank_label
@@ -63,5 +81,14 @@ class User < ApplicationRecord
   # any staleness between a user's activity and their displayed rank.
   def current_rank
     Rank.ordered.reverse_each.find { |rank| rank.earned_by?(self) }
+  end
+
+  private
+
+  def date_of_birth_is_plausible
+    return if date_of_birth.blank?
+
+    errors.add(:date_of_birth, "can't be in the future") if date_of_birth.future?
+    errors.add(:date_of_birth, "is not valid") if date_of_birth < 150.years.ago.to_date
   end
 end

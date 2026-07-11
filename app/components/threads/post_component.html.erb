@@ -4,7 +4,10 @@
   <div class="relative border-r border-line overflow-hidden bg-[#1b2230]">
     <div class="absolute inset-0 z-[1] pointer-events-none bg-linear-to-b from-black/32 via-black/70 to-black/90"></div>
     <div class="relative z-[2] p-4 text-center">
-      <a href="#" class="text-white font-bold text-[13px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)] hover:underline"><%= post[:user] %></a>
+      <a href="#" class="text-white font-bold text-[13px] [text-shadow:0_1px_2px_rgba(0,0,0,0.5)] hover:underline">
+        <% if post[:flag] %><span title="<%= post[:country_name] %>"><%= post[:flag] %></span><% end %>
+        <%= post[:user] %>
+      </a>
       <div class="text-[11px] text-white/85 mt-0.5 font-bold [text-shadow:0_1px_2px_rgba(0,0,0,0.5)]"><%= post[:rank] %></div>
 
       <% if post[:earned_rank_name].present? %>
@@ -63,7 +66,7 @@
     <% end %>
 
     <% if post[:signature].present? %>
-      <div class="mt-2.5 pt-2 border-t border-dotted border-line text-[11px] italic text-muted"><%= post[:signature] %></div>
+      <div class="mt-2.5 pt-2 border-t border-dotted border-line text-[11px] text-muted [&_img]:max-w-[150px] [&_img]:max-h-[60px] [&_img]:object-contain [&_img]:inline-block [&_p]:m-0"><%= post[:signature] %></div>
     <% end %>
 
     <div class="flex gap-2 mt-3.5 justify-end items-center">

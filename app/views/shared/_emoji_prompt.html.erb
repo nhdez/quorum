@@ -4,47 +4,13 @@
   so selected emoji are inserted as plain characters, not Action Text
   attachments — Lexxy's own docs call this out as the intended use case
   for emoji specifically. Items are inline (no server round trip needed
-  for a small static list).
+  for a small static list). The same Emoji::LIST backs signature markdown
+  shortcode rendering.
 %>
-<% emoji_items = [
-  [ "😀", "smile happy grin" ],
-  [ "😂", "laugh joy tears lol" ],
-  [ "😉", "wink" ],
-  [ "😍", "love heart eyes" ],
-  [ "🤔", "thinking hmm" ],
-  [ "😢", "cry sad" ],
-  [ "😡", "angry mad" ],
-  [ "😱", "shocked scream" ],
-  [ "😴", "sleep tired" ],
-  [ "😎", "cool sunglasses" ],
-  [ "🙄", "eyeroll" ],
-  [ "🤷", "shrug" ],
-  [ "👍", "thumbsup yes agree" ],
-  [ "👎", "thumbsdown no disagree" ],
-  [ "👏", "clap applause" ],
-  [ "🙌", "praise hooray" ],
-  [ "🤝", "handshake deal" ],
-  [ "👋", "wave hello hi bye" ],
-  [ "🙏", "pray please thanks" ],
-  [ "💪", "muscle strong" ],
-  [ "❤️", "heart love" ],
-  [ "🔥", "fire hot lit" ],
-  [ "💯", "hundred perfect" ],
-  [ "⭐", "star" ],
-  [ "🎉", "party tada celebrate" ],
-  [ "🚀", "rocket launch" ],
-  [ "✅", "check yes correct done" ],
-  [ "❌", "cross no wrong" ],
-  [ "⚠️", "warning caution" ],
-  [ "👀", "eyes look watching" ],
-  [ "🤦", "facepalm" ],
-  [ "🍿", "popcorn drama" ]
-] %>
-
 <lexxy-prompt trigger=":" insert-editable-text empty-results="No emoji found">
-  <% emoji_items.each do |emoji, names| %>
-    <lexxy-prompt-item search="<%= names %>">
-      <template type="menu"><%= emoji %> <%= names.split(" ").first %></template>
+  <% Emoji::LIST.each do |name, emoji| %>
+    <lexxy-prompt-item search="<%= name %>">
+      <template type="menu"><%= emoji %> <%= name %></template>
       <template type="editor"><%= emoji %></template>
     </lexxy-prompt-item>
   <% end %>

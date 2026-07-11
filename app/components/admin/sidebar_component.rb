@@ -7,6 +7,7 @@ module Admin
       { key: :ranks, label: "Ranks", path: :admin_ranks_path },
       { key: :boards, label: "Forums & Boards", path: :admin_boards_path },
       { key: :reports, label: "Reported Posts" },
+      { key: :signature_moderations, label: "Signature Queue", path: :admin_signature_moderations_path },
       { key: :bias_bot, label: "AI Bias Bot" },
       { key: :fallacy_detection, label: "Fallacy Detection", path: :admin_fallacy_definitions_path },
       { key: :affiliations, label: "Affiliations" },
