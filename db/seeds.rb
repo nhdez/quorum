@@ -6,14 +6,15 @@
 # seeded posts are titles + flags only, no post text.
 
 USER_COUNT = 40
+UNCONFIRMED_USER_COUNT = 3
 
-FACTION_NAMES = [
-  "Progressive Alliance",
-  "Liberty Caucus",
-  "Centrist Coalition",
-  "Populist Front",
-  "Independent Bloc"
-].freeze
+FACTIONS = {
+  "Progressive Alliance" => "#6b4fa0",
+  "Liberty Caucus" => "#a0524f",
+  "Centrist Coalition" => "#4f8aa0",
+  "Populist Front" => "#7a9a4f",
+  "Independent Bloc" => "#a0824f"
+}.freeze
 
 FORUM_STRUCTURE = {
   "Announcements & News" => [
@@ -31,15 +32,26 @@ FORUM_STRUCTURE = {
 
 ActiveRecord::Base.transaction do
   puts "Clearing existing data..."
+  ActiveRecord::Base.connection.execute("DELETE FROM users_roles")
   ThreadReply.delete_all
   ForumThread.delete_all
   Forum.delete_all
   ForumCategory.delete_all
-  Faction.delete_all
   User.delete_all
+  Faction.delete_all
+  Role.delete_all
+
+  puts "Creating admin user (admin@quorum.test / password123)..."
+  admin = User.create!(
+    email: "admin@quorum.test",
+    password: "password123",
+    password_confirmation: "password123",
+    confirmed_at: Time.current
+  )
+  admin.add_role(:admin)
 
   puts "Creating #{USER_COUNT} users..."
-  USER_COUNT.times do
+  users = USER_COUNT.times.map do
     User.create!(
       email: Faker::Internet.unique.email,
       password: "password123",
@@ -48,13 +60,30 @@ ActiveRecord::Base.transaction do
     )
   end
 
-  puts "Creating #{FACTION_NAMES.size} factions..."
-  FACTION_NAMES.each do |name|
+  puts "Creating #{UNCONFIRMED_USER_COUNT} unconfirmed users (pending registrations)..."
+  UNCONFIRMED_USER_COUNT.times do
+    User.create!(
+      email: Faker::Internet.unique.email,
+      password: "password123",
+      password_confirmation: "password123"
+    )
+  end
+
+  puts "Creating #{FACTIONS.size} factions..."
+  factions = FACTIONS.map do |name, color|
     Faction.create!(
       name: name,
       description: Faker::Lorem.sentence(word_count: 12),
+      color: color,
       is_active: true
     )
+  end
+
+  puts "Assigning some users to factions..."
+  users.each do |user|
+    next if rand < 0.35 # leave some users unaffiliated
+
+    user.update!(faction: factions.sample)
   end
 
   puts "Creating forum structure..."
@@ -80,12 +109,15 @@ ActiveRecord::Base.transaction do
       rand(forum_data[:threads]).times do
         thread = ForumThread.create!(
           forum: forum,
+          user: users.sample,
           title: Faker::Lorem.sentence(word_count: rand(4..10)).chomp("."),
+          body: Faker::Lorem.paragraphs(number: rand(1..3)).join("\n\n"),
           is_draft: false,
           is_sticky: rand < 0.05,
           is_visible: true,
           can_be_replied_to: true,
           includes_poll: rand < 0.1,
+          views_count: rand(0..500),
           created_at: Faker::Time.backward(days: 180)
         )
 
@@ -93,6 +125,8 @@ ActiveRecord::Base.transaction do
         rand(forum_data[:replies]).times do
           ThreadReply.create!(
             forum_thread: thread,
+            user: users.sample,
+            body: Faker::Lorem.paragraph(sentence_count: rand(1..4)),
             can_be_quoted: true,
             created_at: thread.created_at + rand(0..reply_time_span)
           )
