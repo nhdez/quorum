@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_11_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_11_140003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -66,6 +66,44 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_130000) do
     t.boolean "is_active", default: true
     t.string "name"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "fallacy_definitions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.float "default_confidence_threshold", default: 0.6, null: false
+    t.boolean "default_enabled", default: true, null: false
+    t.integer "default_severity", default: 1, null: false
+    t.text "detection_prompt_fragment", null: false
+    t.string "display_name", null: false
+    t.string "key", null: false
+    t.text "long_description", null: false
+    t.text "short_description", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_fallacy_definitions_on_key", unique: true
+  end
+
+  create_table "fallacy_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.float "confidence", null: false
+    t.datetime "created_at", null: false
+    t.boolean "dismissed_by_author", default: false, null: false
+    t.text "excerpt", null: false
+    t.uuid "fallacy_definition_id", null: false
+    t.uuid "flaggable_id", null: false
+    t.string "flaggable_type", null: false
+    t.boolean "visible_publicly", default: false, null: false
+    t.index ["flaggable_type", "flaggable_id"], name: "index_fallacy_flags_on_flaggable_type_and_flaggable_id"
+  end
+
+  create_table "fallacy_scope_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.float "confidence_threshold"
+    t.datetime "created_at", null: false
+    t.boolean "enabled"
+    t.uuid "fallacy_definition_id", null: false
+    t.uuid "scope_id", null: false
+    t.string "scope_type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fallacy_definition_id", "scope_type", "scope_id"], name: "index_fallacy_scope_settings_uniqueness", unique: true
+    t.index ["scope_type", "scope_id"], name: "index_fallacy_scope_settings_on_scope_type_and_scope_id"
   end
 
   create_table "forum_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -150,6 +188,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_130000) do
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
+    t.boolean "show_my_fallacy_flags_publicly", default: false, null: false
     t.integer "sign_in_count", default: 0, null: false
     t.string "unconfirmed_email"
     t.string "unlock_token"
@@ -171,6 +210,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_11_130000) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "fallacy_flags", "fallacy_definitions"
+  add_foreign_key "fallacy_scope_settings", "fallacy_definitions"
   add_foreign_key "forum_threads", "forums"
   add_foreign_key "forum_threads", "users"
   add_foreign_key "forums", "forum_categories"

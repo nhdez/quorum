@@ -15,11 +15,16 @@ Rails.application.routes.draw do
     member { patch :join }
   end
 
+  resources :fallacy_flags, only: [] do
+    member { patch :dismiss }
+  end
+
   namespace :admin do
     get "/", to: "dashboard#index", as: :dashboard
     resource :ai_settings, only: %i[edit update] do
       post :test, on: :collection
     end
+    resources :fallacy_definitions, only: %i[index update]
     resources :pending_registrations, only: %i[destroy] do
       member { patch :confirm }
     end

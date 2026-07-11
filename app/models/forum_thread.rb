@@ -1,6 +1,7 @@
 class ForumThread < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: :slugged
+  include FallacyScannable
 
   belongs_to :forum
   belongs_to :user
@@ -9,4 +10,8 @@ class ForumThread < ApplicationRecord
 
   validates :title, presence: true
   validates :body, presence: true
+
+  def fallacy_scan_forum
+    forum
+  end
 end

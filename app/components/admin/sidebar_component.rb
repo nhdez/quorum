@@ -6,6 +6,7 @@ module Admin
       { key: :boards, label: "Forums & Boards" },
       { key: :reports, label: "Reported Posts" },
       { key: :bias_bot, label: "AI Bias Bot" },
+      { key: :fallacy_detection, label: "Fallacy Detection", path: :admin_fallacy_definitions_path },
       { key: :affiliations, label: "Affiliations" },
       { key: :announcements, label: "Announcements" },
       { key: :settings, label: "Settings", path: :edit_admin_ai_settings_path }

@@ -1,0 +1,24 @@
+<%= render Ui::PanelComponent.new(title: "Fallacy Detection") do %>
+  <div class="p-4">
+    <p class="text-[11px] text-muted mb-3.5 italic">Controls apply site-wide. The bot only ever tags posts privately for their author — it cannot edit, hide, or remove content.</p>
+
+    <% @fallacy_definitions.each do |definition| %>
+      <%= form_with model: definition, url: admin_fallacy_definition_path(definition), method: :patch, local: true do |f| %>
+        <div class="flex items-center gap-3.5 py-2.5 border-b border-dashed border-line">
+          <div class="flex-1 min-w-0">
+            <div class="text-xs font-bold"><%= definition.display_name %></div>
+            <div class="text-[10px] text-muted"><%= definition.short_description %></div>
+          </div>
+          <label class="flex items-center gap-1.5 text-[11px] text-muted shrink-0">
+            <%= f.check_box :default_enabled %> Enabled
+          </label>
+          <label class="flex items-center gap-1.5 text-[11px] text-muted shrink-0">
+            Threshold
+            <%= f.number_field :default_confidence_threshold, min: 0, max: 1, step: 0.05, class: "w-16 px-1.5 py-1 border border-line rounded-[3px] text-xs" %>
+          </label>
+          <%= f.submit "Save", class: "px-2.5 py-1 border border-line rounded-[3px] bg-row-alt text-ink text-[11px] font-bold cursor-pointer [font-family:inherit] hover:bg-line shrink-0" %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

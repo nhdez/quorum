@@ -73,7 +73,23 @@ class ForumThreadsController < ApplicationController
       is_devils_advocate: false,
       ai_flag_reason: nil,
       signature: nil,
-      body: post.body
+      body: post.body,
+      fallacy_flags: fallacy_flags_data(post, user)
     }
+  end
+
+  def fallacy_flags_data(post, author)
+    return [] unless current_user == author || author.show_my_fallacy_flags_publicly?
+
+    post.fallacy_flags.visible.includes(:fallacy_definition).map do |flag|
+      {
+        id: flag.id,
+        fallacy_name: flag.fallacy_definition.display_name,
+        excerpt: flag.excerpt,
+        confidence: flag.confidence,
+        dismissible: current_user == author,
+        dismiss_path: dismiss_fallacy_flag_path(flag)
+      }
+    end
   end
 end
