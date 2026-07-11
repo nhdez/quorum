@@ -7,6 +7,8 @@ class User < ApplicationRecord
          :confirmable, :lockable, :trackable
 
   belongs_to :faction, optional: true
+  has_many :forum_threads, dependent: :destroy
+  has_many :thread_replies, dependent: :destroy
 
   AVATAR_COLORS = [ "#2455a4", "#7d97c2", "#1e8449", "#a85050", "#6b7aa8", "#8a8f9a", "#3f6fa0", "#9a8a3f" ].freeze
 

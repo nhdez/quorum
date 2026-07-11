@@ -2,8 +2,10 @@
 
 one:
   forum_thread: one
+  user: one
   can_be_quoted: false
 
 two:
   forum_thread: two
+  user: two
   can_be_quoted: false

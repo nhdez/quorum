@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_10_174253) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_11_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "factions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "color", default: "#7a7a7a", null: false
     t.datetime "created_at", null: false
     t.text "description"
     t.boolean "is_active", default: true
@@ -46,8 +47,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_174253) do
     t.string "slug", null: false
     t.string "title"
     t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.integer "views_count", default: 0, null: false
     t.index ["forum_id"], name: "index_forum_threads_on_forum_id"
     t.index ["slug"], name: "index_forum_threads_on_slug", unique: true
+    t.index ["user_id"], name: "index_forum_threads_on_user_id"
   end
 
   create_table "forums", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -64,12 +68,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_174253) do
     t.index ["slug"], name: "index_forums_on_slug", unique: true
   end
 
+  create_table "roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.uuid "resource_id"
+    t.string "resource_type"
+    t.datetime "updated_at", null: false
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
+    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource"
+  end
+
   create_table "thread_replies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.boolean "can_be_quoted", default: true
     t.datetime "created_at", null: false
     t.uuid "forum_thread_id", null: false
     t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
     t.index ["forum_thread_id"], name: "index_thread_replies_on_forum_thread_id"
+    t.index ["user_id"], name: "index_thread_replies_on_user_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -81,6 +97,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_174253) do
     t.string "current_sign_in_ip"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.uuid "faction_id"
     t.integer "failed_attempts", default: 0, null: false
     t.datetime "last_sign_in_at"
     t.string "last_sign_in_ip"
@@ -94,11 +111,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_10_174253) do
     t.datetime "updated_at", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["faction_id"], name: "index_users_on_faction_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "users_roles", id: false, force: :cascade do |t|
+    t.uuid "role_id"
+    t.uuid "user_id"
+    t.index ["role_id"], name: "index_users_roles_on_role_id"
+    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
+    t.index ["user_id"], name: "index_users_roles_on_user_id"
+  end
+
   add_foreign_key "forum_threads", "forums"
+  add_foreign_key "forum_threads", "users"
   add_foreign_key "forums", "forum_categories"
   add_foreign_key "thread_replies", "forum_threads"
+  add_foreign_key "thread_replies", "users"
+  add_foreign_key "users", "factions"
+  add_foreign_key "users_roles", "roles"
+  add_foreign_key "users_roles", "users"
 end
