@@ -139,4 +139,4 @@ end
 puts "Done: #{User.count} users, #{Faction.count} factions, #{ForumCategory.count} categories, " \
      "#{Forum.count} forums, #{ForumThread.count} threads, #{ThreadReply.count} replies."
 
-load Rails.root.join("db/seeds/fallacy_definitions.rb")
+load Rails.root.join("db/seeds/fallacies.rb")
