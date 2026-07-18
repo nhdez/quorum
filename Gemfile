@@ -50,7 +50,7 @@ gem "anthropic"
 gem "aws-sdk-s3", require: false
 gem "noticed"
 gem "redcarpet"
-gem "lexxy", "~> 0.9.21"
+gem "lexxy", "~> 0.9.25"
 gem "tailwindcss-rails"
 
 group :development, :test do
